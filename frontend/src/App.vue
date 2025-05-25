@@ -1,21 +1,15 @@
 <template>
-  <router-view />
+  <div>
+    <Navbar />
+    <router-view />
+    
+  </div>
 </template>
 
-
 <script>
-export default {
-  methods: {
-    pesan() {
-      alert('Vue.js jalan!')
-    }
-  }
-}
-</script>
+import Navbar from './components/Navbar.vue';
 
-<style>
-h1 {
-  color: #42b983;
-  font-family: sans-serif;
-}
-</style>
+export default {
+  components: { Navbar },
+};
+</script>
