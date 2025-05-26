@@ -5,7 +5,6 @@
       <div class="menu-items">
         <router-link to="/sewa-lapangan">Sewa Lapangan</router-link>
         <router-link to="/community">Community</router-link>
-        <router-link to="/news">News</router-link>
       </div>
       <div class="auth-buttons">
         <router-link to="/login" class="login">Login</router-link>
