@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Halaman Community</h1>
+    <h1>Haloooooo</h1>
   </div>
 </template>
 
