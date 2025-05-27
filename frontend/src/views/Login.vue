@@ -25,15 +25,23 @@
           </span>
         </div>
 
-        <div class="input-group">
-          <input type="password" placeholder=" " class="form-input" id="password" autocomplete="current-password" />
-          <label for="password">Password</label>
-          <span class="input-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1976D2">
-              <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-            </svg>
-          </span>
-        </div>
+    <div class="input-group">
+      <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password" autocomplete="new-password" />
+      <label for="password">Password</label>
+      <span class="input-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+          <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
+        </svg>
+      </span>
+      <span class="toggle-icon" @click="togglePassword">
+        <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+          <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z"/>
+        </svg>
+        <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+          <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z"/>
+        </svg>
+      </span>
+    </div>
 
         <div class="options">
           <label class="remember-me">
@@ -64,27 +72,25 @@
 
 <script>
 export default {
-  name: "App",
-};
+  name: 'Login',
+  data() {
+    return {
+      showPassword: false,
+      showConfirmPassword: false
+    }
+  },
+  methods: {
+    togglePassword() {
+      this.showPassword = !this.showPassword;
+    },
+    toggleConfirmPassword() {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
+  }
+}
 </script>
 
 <style scoped>
-/* Navbar */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 70px;
-  width: 100%;
-  background-color: #1976d2;
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  font-size: 1.5rem;
-  z-index: 100;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
 
 /* Login Page */
 .login-page {
@@ -123,14 +129,14 @@ export default {
 
 .branding h2 {
   color: #1976d2;
-  margin-top: 10px;
+  margin-top: 0;
   font-size: 1.8rem;
 }
 
 .login-title {
   color: #0d47a1;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   font-size: 1.4rem;
   font-weight: 600;
 }
@@ -209,6 +215,25 @@ export default {
   opacity: 0;
   cursor: pointer;
 }
+
+.toggle-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 70%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #999;
+      font-size: 1rem;
+      z-index: 2;
+    }
 
 .checkmark {
   position: absolute;

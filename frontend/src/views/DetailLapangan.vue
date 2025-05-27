@@ -106,7 +106,7 @@ export default {
 
 <style scoped>
 .detail-container {
-  padding: 20px;
+  padding: 60px;
 }
 .foto-detail {
   width: 100%;

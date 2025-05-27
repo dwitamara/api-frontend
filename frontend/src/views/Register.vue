@@ -1,92 +1,111 @@
 <template>
-  <div class="login-page">
-    <div class="form-box">
-      <div class="branding">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1976D2" width="48px" height="48px">
-          <path d="M18 10V5H6v5H4v7h1.33L6 19h1l.67-2h8.67l.66 2h1l.67-2H20v-7h-2zm-8 0H8V7h2v3zm6 0h-2V7h2v3z"/>
-        </svg>
-        <h2>SportVenue</h2>
+  <div>
+    <nav class="navbar">
+      <h1>SportVenue</h1>
+    </nav>
+
+    <div class="login-page">
+      <div class="form-box">
+        <div class="branding">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1976D2" width="48px" height="48px">
+            <path d="M18 10V5H6v5H4v7h1.33L6 19h1l.67-2h8.67l.66 2h1l.67-2H20v-7h-2zm-8 0H8V7h2v3zm6 0h-2V7h2v3z"/>
+          </svg>
+          <h2>SportVenue</h2>
+        </div>
+
+        <h3 class="login-title">Buat Akun Baru</h3>
+
+        <!-- Nama -->
+        <div class="input-group">
+          <input type="text" placeholder=" " class="form-input" id="name" autocomplete="name" />
+          <label for="name">Nama</label>
+          <span class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 4.88-2.2 4.88-4.91C16.88 4.2 14.7 2 12 2S7.12 4.2 7.12 7.09C7.12 9.8 9.3 12 12 12zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Email -->
+        <div class="input-group">
+          <input type="email" placeholder=" " class="form-input" id="email" autocomplete="email" />
+          <label for="email">Email</label>
+          <span class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Nomor Telepon -->
+        <div class="input-group">
+          <input type="tel" placeholder=" " class="form-input" id="phone" autocomplete="tel" />
+          <label for="phone">Nomor Telepon</label>
+          <span class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C9.39 21 3 14.61 3 6c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/>
+            </svg>
+          </span>
+        </div>
+
+<!-- Password -->
+<div class="input-group">
+  <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password" autocomplete="new-password" />
+  <label for="password">Password</label>
+  <span class="input-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+      <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
+    </svg>
+  </span>
+  <span class="toggle-icon" @click="togglePassword">
+    <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+      <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z"/>
+    </svg>
+    <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+      <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z"/>
+    </svg>
+  </span>
+</div>
+
+<!-- Konfirmasi Password -->
+<div class="input-group">
+  <input :type="showConfirmPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="confirmPassword" autocomplete="new-password" />
+  <label for="confirmPassword">Konfirmasi Password</label>
+  <span class="input-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+      <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
+    </svg>
+  </span>
+  <span class="toggle-icon" @click="toggleConfirmPassword">
+    <svg v-if="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+      <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z"/>
+    </svg>
+    <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+      <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z"/>
+    </svg>
+  </span>
+</div>
+
+
+        <!-- Tombol Daftar -->
+        <button class="submit-btn">
+          <span>Daftar</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
+            <path d="M10 17l5-5-5-5v10z" />
+          </svg>
+        </button>
+
+        <p class="register-link">
+          Sudah punya akun? <router-link to="/login" class="register">Login</router-link>
+        </p>
       </div>
 
-      <h3 class="login-title">Daftar Akun Baru</h3>
-
-      <div class="input-group">
-        <input type="text" placeholder=" " class="form-input" id="name">
-        <label for="name">Nama</label>
-        <span class="input-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-            <path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2c-3.3 0-9.9 1.7-9.9 5v2h19.8v-2c0-3.3-6.6-5-9.9-5z"/>
-          </svg>
-        </span>
-      </div>
-
-      <div class="input-group">
-        <input type="email" placeholder=" " class="form-input" id="email">
-        <label for="email">Email</label>
-        <span class="input-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
-        </span>
-      </div>
-
-      <!-- PASSWORD FIELD -->
-      <div class="input-group">
-        <span class="input-icon">
-          <!-- Gembok ikon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-            <path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-7h-1V7a5 5 0 0 0-10 0v3H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zM8 7a4 4 0 1 1 8 0v3H8V7z"/>
-          </svg>
-        </span>
-        <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password">
-        <label for="password">Password</label>
-        <!-- Mata toggle di ujung kanan -->
-        <span class="toggle-icon" @click="togglePassword">
-          <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zm0 11c-2 0-3.8-1.5-4-3.5.2-2 2-3.5 4-3.5s3.8 1.5 4 3.5c-.2 2-2 3.5-4 3.5z"/>
-          </svg>
-          <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zM12 15c-1.7 0-3-1.3-3-3s1.3-3 3-3c1.6 0 3 1.3 3 3s-1.4 3-3 3z"/>
-          </svg>
-        </span>
-      </div>
-
-      <!-- CONFIRM PASSWORD FIELD -->
-      <div class="input-group">
-        <span class="input-icon">
-          <!-- Gembok ikon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-            <path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-7h-1V7a5 5 0 0 0-10 0v3H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zM8 7a4 4 0 1 1 8 0v3H8V7z"/>
-          </svg>
-        </span>
-        <input :type="showConfirmPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="confirmPassword">
-        <label for="confirmPassword">Konfirmasi Password</label>
-        <!-- Mata toggle di ujung kanan -->
-        <span class="toggle-icon" @click="toggleConfirmPassword">
-          <svg v-if="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zm0 11c-2 0-3.8-1.5-4-3.5.2-2 2-3.5 4-3.5s3.8 1.5 4 3.5c-.2 2-2 3.5-4 3.5z"/>
-          </svg>
-          <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zM12 15c-1.7 0-3-1.3-3-3s1.3-3 3-3c1.6 0 3 1.3 3 3s-1.4 3-3 3z"/>
-          </svg>
-        </span>
-      </div>
-
-      <button class="submit-btn">
-        <span>Daftar</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
-          <path d="M10 17l5-5-5-5v10z"/>
-        </svg>
-      </button>
-
-      <p class="register-link">Sudah punya akun? <router-link to="/login" class="login">Login</router-link>
-      </p>
+      <div class="decoration-circle circle-1"></div>
+      <div class="decoration-circle circle-2"></div>
     </div>
-
-    <div class="decoration-circle circle-1"></div>
-    <div class="decoration-circle circle-2"></div>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -115,49 +134,63 @@ export default {
   background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
+  align-items: flex-start; /* mulai dari atas */
+  padding: 100px 20px 20px 20px; /* ruang atas untuk navbar 70px + ekstra */
   box-sizing: border-box;
   overflow: hidden;
+  overflow-y: auto;
   position: fixed;
   top: 0;
   left: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
+  z-index: 50;
 }
 
+/* Form Box */
 .form-box {
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0 15px 35px rgba(25, 118, 210, 0.15);
-  padding: 40px;
+  padding: 2rem; /* dari 20px dikurangi agar hemat ruang */
   width: 100%;
   max-width: 650px;
+  height: auto;
   position: relative;
   z-index: 1;
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 15px; /* beri jarak antar elemen, tapi hemat */
 }
+
 
 .branding {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 0;
+  margin-top: -10px; /* opsional jika ingin logo naik */
+  line-height: 1.2;   /* agar vertikal lebih rapat */
 }
+
 
 .branding h2 {
   color: #1976D2;
-  margin-top: 10px;
+  margin: 0;
   font-size: 1.8rem;
+  line-height: 1;
 }
 
 .login-title {
   color: #0d47a1;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
+  margin-top: 2px;
   font-size: 1.4rem;
   font-weight: 600;
 }
 
 .input-group {
   position: relative;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
 }
 
 .input-icon {
@@ -194,6 +227,8 @@ export default {
   font-size: 1rem;
   transition: all 0.3s ease;
   background-color: #f5f9ff;
+  color: #666; /* WARNA TEXT DI INPUT ABU-ABU */
+  box-sizing: border-box;
 }
 
 .form-input:focus {
