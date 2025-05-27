@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import GORRungkut from '@/assets/gor_rungkut.jpeg'
+
 export default {
   name: 'SewaLapangan',
   data() {
@@ -29,12 +31,12 @@ export default {
       lapanganList: [
         { 
           id: 1, 
-          nama: 'Metro Atom Futsal Badminton', 
+          nama: 'GOR Rungkut Mapan Timur', 
           jenis: ['Futsal', 'Badminton'], 
           harga: 70000,
           rating: 5.0,
-          lokasi: 'Kota Jakarta Pusat',
-          foto: 'https://source.unsplash.com/800x400/?badminton,court' // ganti dengan gambar asli jika ada
+          lokasi: 'Surabaya',
+          foto: GORRungkut
         }
       ]
     }
@@ -43,8 +45,8 @@ export default {
 </script>
 
 <style scoped>
-.sewa-container {
-  padding: 20px;
+.sewa-container h1 {
+  color: #222; /* warna gelap agar jelas */
 }
 .lapangan-grid {
   display: flex;
@@ -68,8 +70,9 @@ export default {
   height: 180px;
   object-fit: cover;
 }
-.lapangan-info {
-  padding: 15px;
+.lapangan-info h2 {
+  color: #222; /* warna gelap */
+  margin: 0;
 }
 .lapangan-meta {
   color: #777;
@@ -85,6 +88,7 @@ export default {
   padding: 4px 8px;
   margin-right: 5px;
   font-size: 13px;
+  color: #222;
 }
 .harga {
   font-size: 16px;
