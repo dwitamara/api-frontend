@@ -200,7 +200,7 @@ export default {
 
 
 .branding h2 {
-  color: #1976D2;
+  color: #FFC107;
   margin: 0;
   font-size: 1.8rem;
   line-height: 1;
