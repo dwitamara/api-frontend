@@ -17,7 +17,7 @@
 
         <!-- Nama -->
         <div class="input-group">
-          <input type="text" placeholder=" " class="form-input" id="name" autocomplete="name" />
+          <input type="text" placeholder=" " class="form-input" id="name" v-model="form.name" autocomplete="name" />
           <label for="name">Nama</label>
           <span class="input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
@@ -28,7 +28,7 @@
 
         <!-- Email -->
         <div class="input-group">
-          <input type="email" placeholder=" " class="form-input" id="email" autocomplete="email" />
+          <input type="email" placeholder=" " class="form-input" id="email" v-model="form.email" autocomplete="email" />
           <label for="email">Email</label>
           <span class="input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@
 
         <!-- Nomor Telepon -->
         <div class="input-group">
-          <input type="tel" placeholder=" " class="form-input" id="phone" autocomplete="tel" />
+          <input type="tel" placeholder=" " class="form-input" id="phone" v-model="form.phone" autocomplete="tel" />
           <label for="phone">Nomor Telepon</label>
           <span class="input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
@@ -48,47 +48,46 @@
           </span>
         </div>
 
-<!-- Password -->
-<div class="input-group">
-  <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password" autocomplete="new-password" />
-  <label for="password">Password</label>
-  <span class="input-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-      <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
-    </svg>
-  </span>
-  <span class="toggle-icon" @click="togglePassword">
-    <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-      <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z"/>
-    </svg>
-    <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-      <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z"/>
-    </svg>
-  </span>
-</div>
+        <!-- Password -->
+        <div class="input-group">
+          <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password" v-model="form.password" autocomplete="new-password" />
+          <label for="password">Password</label>
+          <span class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
+            </svg>
+          </span>
+          <span class="toggle-icon" @click="togglePassword">
+            <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z"/>
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z"/>
+            </svg>
+          </span>
+        </div>
 
-<!-- Konfirmasi Password -->
-<div class="input-group">
-  <input :type="showConfirmPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="confirmPassword" autocomplete="new-password" />
-  <label for="confirmPassword">Konfirmasi Password</label>
-  <span class="input-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-      <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
-    </svg>
-  </span>
-  <span class="toggle-icon" @click="toggleConfirmPassword">
-    <svg v-if="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-      <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z"/>
-    </svg>
-    <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-      <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z"/>
-    </svg>
-  </span>
-</div>
-
+        <!-- Konfirmasi Password -->
+        <div class="input-group">
+          <input :type="showConfirmPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="confirmPassword" v-model="form.confirmPassword" autocomplete="new-password" />
+          <label for="confirmPassword">Konfirmasi Password</label>
+          <span class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
+            </svg>
+          </span>
+          <span class="toggle-icon" @click="toggleConfirmPassword">
+            <svg v-if="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z"/>
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z"/>
+            </svg>
+          </span>
+        </div>
 
         <!-- Tombol Daftar -->
-        <button class="submit-btn">
+        <button class="submit-btn" @click="register">
           <span>Daftar</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
             <path d="M10 17l5-5-5-5v10z" />
@@ -106,14 +105,22 @@
   </div>
 </template>
 
-
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Register',
   data() {
     return {
       showPassword: false,
-      showConfirmPassword: false
+      showConfirmPassword: false,
+      form: {
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: ''
+      }
     }
   },
   methods: {
@@ -122,6 +129,26 @@ export default {
     },
     toggleConfirmPassword() {
       this.showConfirmPassword = !this.showConfirmPassword;
+    },
+    async register() {
+      if (this.form.password !== this.form.confirmPassword) {
+        alert("Password dan konfirmasi password tidak sama.");
+        return;
+      }
+
+      try {
+        const response = await axios.post('http://localhost:3000/api/register', {
+          name: this.form.name,
+          email: this.form.email,
+          phone: this.form.phone,
+          password: this.form.password
+        });
+        alert("Registrasi berhasil! Silakan login.");
+        this.$router.push('/login');
+      } catch (error) {
+        console.error(error);
+        alert("Registrasi gagal. Silakan coba lagi.");
+      }
     }
   }
 }
