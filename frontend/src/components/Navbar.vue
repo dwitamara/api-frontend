@@ -44,12 +44,13 @@
 
 .menu-items {
   display: flex;
-  gap: 2rem;
+  gap: 8rem;
 }
 
 .menu-items a {
   color: white;
   text-decoration: none;
+  font-size: 1.3rem;
   font-weight: 500;
 }
 
