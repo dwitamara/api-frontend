@@ -49,6 +49,7 @@ export default {
   padding: 20px;
   font-family: Arial, sans-serif;
   color: #333333;
+  min-height: 100vh;
 }
 
 section {
@@ -56,10 +57,11 @@ section {
 }
 
 .banner {
-  background-color: #f2f2f2;
+  background-color: #cce6ff; /* biru pastel lembut */
   padding: 30px;
   text-align: center;
   border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .description,
@@ -68,8 +70,9 @@ section {
   background-color: #ffffff;
   color: #333333;
   padding: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid #99cfff; /* border biru pastel */
   border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 h1, h2 {
@@ -83,5 +86,14 @@ ul {
 
 ul li {
   margin-bottom: 10px;
+}
+</style>
+
+<!-- Tambahkan ini di luar <style scoped> agar berlaku global -->
+<style>
+html, body {
+  background-color: #e6f2ff; /* biru pastel sangat lembut */
+  margin: 0;
+  padding: 0;
 }
 </style>
