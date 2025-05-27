@@ -44,7 +44,7 @@
 
 .menu-items {
   display: flex;
-  gap: 8rem;
+  gap: 4rem;
 }
 
 .menu-items a {

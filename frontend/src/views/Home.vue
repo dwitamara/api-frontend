@@ -1,12 +1,6 @@
 <template>
-  <div class="home-container">
-    <!-- Banner -->
-    <section class="banner">
-      <h1>Selamat Datang di BadmintonKu!</h1>
-      <p>Solusi mudah dan cepat untuk sewa lapangan badminton favoritmu!</p>
-    </section>
-
-    <!-- Deskripsi Website -->
+  <div>
+  <HeroBanner />
     <section class="description">
       <h2>Tentang Kami</h2>
       <p>
@@ -39,9 +33,15 @@
 </template>
 
 <script>
+
+import HeroBanner from '@/components/HeroBanner.vue';
 export default {
   name: 'Home',
+  components: {
+    HeroBanner
+  }
 }
+
 </script>
 
 <style scoped>
@@ -56,13 +56,6 @@ section {
   margin-bottom: 40px;
 }
 
-.banner {
-  background-color: #cce6ff; /* biru pastel lembut */
-  padding: 30px;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-}
 
 .description,
 .location,
