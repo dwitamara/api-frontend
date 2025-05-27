@@ -13,8 +13,16 @@ const routes = [
   { path: '/community', component: Community },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
-  { path: '/detail-lapangan', component: DetailLapangan },
-  { path: '/detail-pembayaran', component: DetailPembayaran }
+  {
+    path: '/detail-lapangan/:id', 
+    component: DetailLapangan,
+    props: true  // supaya param id diteruskan ke komponen sebagai prop
+  },
+  {
+    path: '/detail-pembayaran/:id',
+    component: DetailPembayaran,
+    props: true
+  }
 ];
 
 const router = createRouter({
