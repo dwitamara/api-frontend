@@ -24,14 +24,15 @@ import banner from '@/assets/banner.png'; // Ganti dengan gambar yang kamu uploa
 <style scoped>
 .hero-banner {
   position: relative;
-  width: 100%;
+  width: 100vw; /* gunakan lebar viewport penuh */
   height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center; /* ganti: tengah */
+  justify-content: center;
   box-sizing: border-box;
-  padding: 0 60px;
+  padding: 0; /* hilangkan padding yang menyempitkan */
+  margin-left: calc(-50vw + 50%); /* force keluar dari container pembungkus */
 }
 
 .banner-img {
@@ -41,6 +42,8 @@ import banner from '@/assets/banner.png'; // Ganti dengan gambar yang kamu uploa
   width: 100%;
   height: 100%;
   object-fit: cover;
+object-position: left center;
+
   z-index: 1;
 }
 
@@ -48,23 +51,26 @@ import banner from '@/assets/banner.png'; // Ganti dengan gambar yang kamu uploa
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: 2;
 }
 
 .banner-content {
-  position: relative; /* biar tetap di atas background */
+  position: relative;
   z-index: 3;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
-  width: 100%;
-  margin: 0 auto;
+  justify-content: flex-start; /* >>> pindahkan konten ke kiri */
+  padding-left: 7vw; /* >>> kasih ruang dari kiri */
+  padding-right: 7vw;
+  box-sizing: border-box;
 }
 
 .banner-text {
   max-width: 600px;
-  width: 100%;
   color: #0D47A1;
 }
 

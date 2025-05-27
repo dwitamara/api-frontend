@@ -1,10 +1,12 @@
 <template>
   <div>
   <HeroBanner />
+
+  <div class="home-container">
     <section class="description">
       <h2>Tentang Kami</h2>
       <p>
-        BadmintonKu adalah platform penyewaan lapangan badminton yang memudahkan kamu untuk memesan lapangan 
+        SportVenue adalah platform penyewaan lapangan yang memudahkan kamu untuk memesan lapangan 
         dengan cepat, aman, dan nyaman. Tersedia berbagai pilihan lapangan berkualitas dengan harga terjangkau.
       </p>
     </section>
@@ -30,6 +32,7 @@
       </ul>
     </section>
   </div>
+  </div>
 </template>
 
 <script>
@@ -46,7 +49,6 @@ export default {
 
 <style scoped>
 .home-container {
-  padding: 20px;
   font-family: Arial, sans-serif;
   color: #333333;
   min-height: 100vh;
