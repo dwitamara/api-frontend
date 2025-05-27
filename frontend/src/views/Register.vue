@@ -108,6 +108,7 @@
 <script>
 import axios from 'axios'
 
+
 export default {
   name: 'Register',
   data() {
@@ -136,20 +137,36 @@ export default {
         return;
       }
 
+      console.log("Registrasi berhasil:", this.form);
+
       try {
-        const response = await axios.post('http://localhost:3000/api/register', {
-          name: this.form.name,
+        const response = await axios.post('http://localhost:3000' + '/auth/register', {
+          username: this.form.name,
           email: this.form.email,
-          phone: this.form.phone,
+          nomor: this.form.phone,
           password: this.form.password
         });
-        alert("Registrasi berhasil! Silakan login.");
-        this.$router.push('/login');
+        if (response.data.status === 'success') {
+          alert("Registrasi berhasil! Silakan login.");
+          this.$router.push('/login');
+        } else {
+          alert("Registrasi gagal: " + response.data.message);
+        }
       } catch (error) {
-        console.error(error);
-        alert("Registrasi gagal. Silakan coba lagi.");
+        console.error("Error during registration:", error);
+        alert("Terjadi kesalahan saat registrasi. Silakan coba lagi.");
       }
     }
+  },
+  mounted() {
+    // Reset form saat komponen dimuat
+    this.form = {
+      name: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: ''
+    };
   }
 }
 </script>

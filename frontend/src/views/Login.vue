@@ -8,7 +8,7 @@
       <div class="form-box">
         <div class="branding">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1976D2" width="48px" height="48px">
-            <path d="M18 10V5H6v5H4v7h1.33L6 19h1l.67-2h8.67l.66 2h1l.67-2H20v-7h-2zm-8 0H8V7h2v3zm6 0h-2V7h2v3z"/>
+            <path d="M18 10V5H6v5H4v7h1.33L6 19h1l.67-2h8.67l.66 2h1l.67-2H20v-7h-2zm-8 0H8V7h2v3zm6 0h-2V7h2v3z" />
           </svg>
           <h2>SportVenue</h2>
         </div>
@@ -20,28 +20,34 @@
           <label for="email">Email</label>
           <span class="input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1976D2">
-              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              <path
+                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
             </svg>
           </span>
         </div>
 
-    <div class="input-group">
-      <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password" autocomplete="new-password" />
-      <label for="password">Password</label>
-      <span class="input-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-          <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
-        </svg>
-      </span>
-      <span class="toggle-icon" @click="togglePassword">
-        <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-          <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z"/>
-        </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-          <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z"/>
-        </svg>
-      </span>
-    </div>
+        <div class="input-group">
+          <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password"
+            autocomplete="new-password" />
+          <label for="password">Password</label>
+          <span class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path
+                d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z" />
+            </svg>
+          </span>
+          <span class="toggle-icon" @click="togglePassword">
+            <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2"
+              viewBox="0 0 24 24">
+              <path
+                d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z" />
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
+              <path
+                d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z" />
+            </svg>
+          </span>
+        </div>
 
         <div class="options">
           <label class="remember-me">
@@ -71,12 +77,18 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Login',
   data() {
     return {
       showPassword: false,
-      showConfirmPassword: false
+      showConfirmPassword: false,
+      form: {
+        email: '',
+        password: ''
+      }
     }
   },
   methods: {
@@ -85,13 +97,45 @@ export default {
     },
     toggleConfirmPassword() {
       this.showConfirmPassword = !this.showConfirmPassword;
+    },
+
+    /*async login() {
+      try {
+        const response = await axios.post('http://localhost:3000' + '/auth/login', {
+          email: this.email,
+          password: this.password
+        });
+
+        if (response.status === 200 && response.data.accesToken) {
+          // Simpan token ke localStorage
+          localStorage.setItem('token', response.data.accesToken);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+
+          alert("Login berhasil!");
+          this.$router.push('/sewa-lapangan');
+        } else {
+          alert("Login gagal: " + (response.data.message || ''));
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        alert(error.response?.data?.message || 'Terjadi kesalahan saat login.');
+      }
     }
+  },
+  mounted() {
+    // Cek apakah user sudah login
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.$router.push('/dashboard'); // Redirect ke dashboard jika sudah login
+    }
+  }*/
   }
-}
+};
+
+
 </script>
 
 <style scoped>
-
 /* Login Page */
 .login-page {
   height: 100vh;
@@ -99,8 +143,10 @@ export default {
   background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* mulai dari atas */
-  padding: 100px 20px 20px 20px; /* ruang atas untuk navbar 70px + ekstra */
+  align-items: flex-start;
+  /* mulai dari atas */
+  padding: 100px 20px 20px 20px;
+  /* ruang atas untuk navbar 70px + ekstra */
   box-sizing: border-box;
   overflow: hidden;
   position: fixed;
@@ -154,12 +200,14 @@ export default {
   font-size: 1rem;
   transition: all 0.3s ease;
   background-color: #f5f9ff;
-  color: #666; /* WARNA TEXT DI INPUT ABU-ABU */
+  color: #666;
+  /* WARNA TEXT DI INPUT ABU-ABU */
   box-sizing: border-box;
 }
 
 .form-input::placeholder {
-  color: transparent; /* sembunyikan placeholder */
+  color: transparent;
+  /* sembunyikan placeholder */
 }
 
 .form-input:focus {
@@ -177,8 +225,8 @@ export default {
   pointer-events: none;
 }
 
-.form-input:focus + label,
-.form-input:not(:placeholder-shown) + label {
+.form-input:focus+label,
+.form-input:not(:placeholder-shown)+label {
   top: -10px;
   left: 35px;
   background: white;
@@ -224,16 +272,16 @@ export default {
   cursor: pointer;
 }
 
-    .toggle-password {
-      position: absolute;
-      right: 15px;
-      top: 70%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #999;
-      font-size: 1rem;
-      z-index: 2;
-    }
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 70%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 1rem;
+  z-index: 2;
+}
 
 .checkmark {
   position: absolute;
@@ -250,7 +298,7 @@ export default {
   background-color: #bbdefb;
 }
 
-.custom-checkbox:checked ~ .checkmark {
+.custom-checkbox:checked~.checkmark {
   background-color: #1976d2;
 }
 
@@ -267,7 +315,7 @@ export default {
   transform: rotate(45deg);
 }
 
-.custom-checkbox:checked ~ .checkmark:after {
+.custom-checkbox:checked~.checkmark:after {
   display: block;
 }
 
