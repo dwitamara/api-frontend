@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import GORRungkut from '@/assets/gor_rungkut.jpeg'
+
 export default {
   name: 'DetailLapangan',
   props: ['id'],
@@ -65,13 +67,13 @@ export default {
     const dataLapangan = {
       1: {
         id: 1,
-        nama: 'Metro Atom Futsal Badminton',
+        nama: 'GOR Rungkut Mapan Timur',
         jenis: ['Futsal', 'Badminton'],
         harga: 70000,
         rating: 5.0,
-        lokasi: 'Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta',
-        foto: 'https://source.unsplash.com/800x400/?badminton,court',
-        deskripsi: 'Metro Atom Futsal Badminton',
+        lokasi: 'Surabaya',
+        foto: GORRungkut,
+        deskripsi: 'Gor Rungkut Mapan Timur',
         aturan: [
           'Pelanggan harus datang tepat waktu.',
           'Dilarang membawa air mineral gelas.',
@@ -124,9 +126,12 @@ export default {
 .info-kanan {
   flex: 1;
 }
+h1 {
+  color: #222;
+}
 .rating-lokasi {
   font-size: 14px;
-  color: #666;
+  color: #444;
   margin-bottom: 10px;
 }
 .jenis-tag {
@@ -134,14 +139,23 @@ export default {
 }
 .badge {
   display: inline-block;
-  background: #eee;
+  background: #ddd;     
   border-radius: 8px;
   padding: 4px 10px;
   margin-right: 5px;
   font-size: 13px;
+  color: #222;         
+  font-weight: 600;
 }
 .section {
   margin-bottom: 20px;
+}
+.section h3 {
+  color: #000; 
+  margin-bottom: 8px;
+}
+.section p, .section ol li {
+  color: #000; 
 }
 .harga-box {
   background: #f9f9f9;
