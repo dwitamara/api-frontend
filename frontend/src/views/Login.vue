@@ -110,7 +110,7 @@ export default {
           localStorage.setItem('token', response.data.accesToken);
           localStorage.setItem('user', JSON.stringify(response.data.user));
           alert("Login berhasil!");
-          this.$router.push('/sewa-lapangan');
+          this.$router.push('/');
         } else {
           alert("Login gagal: " + (response.data.message || ''));
         }
