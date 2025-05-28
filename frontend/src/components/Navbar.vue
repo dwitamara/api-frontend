@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar">
+  <nav class="navbar" v-if="isReady">
     <div class="navbar-container">
       <router-link to="/" class="logo">SportVenue</router-link>
       <div class="menu-items">
@@ -9,7 +9,8 @@
 
       <div class="auth-buttons">
         <div v-if="isLoggedIn" class="user-info" @click="toggleModal">
-          <img class="avatar" src="https://i.pravatar.cc/40" alt="avatar" />
+          <!-- Ganti src avatar -->
+<img class="avatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=character" alt="avatar" />
           <span class="username">Welcome, {{ user.username }}</span>
         </div>
 
@@ -43,6 +44,7 @@ export default {
       isLoggedIn: false,
       user: {},
       showModal: false,
+      isReady: false, // Tambahan untuk mencegah flicker
     };
   },
   mounted() {
@@ -58,8 +60,9 @@ export default {
       const token = localStorage.getItem("token");
       const userData = localStorage.getItem("user");
 
-      this.isLoggedIn = !!token;
+      this.isLoggedIn = !!token && !!userData;
       this.user = userData ? JSON.parse(userData) : {};
+      this.isReady = true; // Menandakan data siap ditampilkan
     },
     logout() {
       localStorage.removeItem("token");
@@ -74,7 +77,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .navbar {
