@@ -8,20 +8,42 @@ import DetailLapangan from '../views/DetailLapangan.vue';
 import DetailPembayaran from '../views/DetailPembayaran.vue';
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/sewa-lapangan', component: SewaLapangan },
-  { path: '/community', component: Community },
-  { path: '/login', component: Login },
-  { path: '/register', component: Register },
   {
-    path: '/detail-lapangan/:id', 
+    path: '/',
+    name: 'Home',          // Disarankan menamai route agar lebih mudah navigasi dengan named routes
+    component: Home,
+  },
+  {
+    path: '/sewa-lapangan',
+    name: 'SewaLapangan',
+    component: SewaLapangan,
+  },
+  {
+    path: '/community',
+    name: 'Community',
+    component: Community,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+  },
+  {
+    path: '/detail-lapangan/:id',
+    name: 'DetailLapangan',
     component: DetailLapangan,
-    props: true  // supaya param id diteruskan ke komponen sebagai prop
+    props: true,           // props:true supaya parameter id otomatis diterima sebagai prop
   },
   {
     path: '/detail-pembayaran/:id',
+    name: 'DetailPembayaran',
     component: DetailPembayaran,
-    props: true
+    props: true,
   }
 ];
 

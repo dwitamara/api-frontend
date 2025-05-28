@@ -6,13 +6,24 @@
       <div class="section-card">
         <h2>Rincian Biaya</h2>
         <div class="biaya-item">
-          <span>Biaya Sewa</span><span>Rp{{ formatRupiah(lapangan.harga * durasi) }}</span>
+          <span>Nama Lapangan</span><span>{{ lapangan.nama }}</span>
+        </div>
+        <div class="biaya-item">
+          <span>Jenis</span><span>{{ lapangan.jenis }}</span>
+        </div>
+        <div class="biaya-item">
+          <span>Jam Sewa</span><span>{{ jam }}</span>
+        </div>
+        <div class="biaya-item">
+          <span>Biaya Sewa ({{ durasi }} jam)</span>
+          <span>Rp{{ formatRupiah(lapangan.harga * durasi) }}</span>
         </div>
         <div class="biaya-item">
           <span>Biaya Produk Tambahan</span><span>Rp0</span>
         </div>
         <div class="biaya-item">
-          <span>Total Biaya (Lunas)</span><span>Rp{{ formatRupiah(lapangan.harga * durasi) }}</span>
+          <span>Total Biaya (Lunas)</span>
+          <span>Rp{{ formatRupiah(lapangan.harga * durasi) }}</span>
         </div>
         <div class="biaya-item">
           <span>Convenience Fee</span><span>Rp0</span>
@@ -32,11 +43,12 @@
           v-for="opsi in metodeOptions"
           :key="opsi.nama"
           @click="pilihMetode(opsi)"
+          :class="{ selected: metodePembayaran === opsi.nama }"
         >
           <img :src="opsi.logo" alt="" class="logo-bank" />
           <div class="info">
             <p>{{ opsi.nama }}</p>
-            <small v-if="opsi.biaya > 0">Rp{{ opsi.biaya.toLocaleString() }}</small>
+            <small v-if="opsi.biaya > 0">Rp{{ opsi.biaya.toLocaleString('id-ID') }}</small>
           </div>
           <input type="radio" :value="opsi.nama" v-model="metodePembayaran" />
         </div>
@@ -69,26 +81,29 @@ export default {
   name: 'DetailPembayaran',
   data() {
     return {
-      isLoggedIn: true,
+      isLoggedIn: true, // Ganti sesuai autentikasi sesungguhnya
       lapangan: {
-        id: this.$route.params.id,
-        nama: 'GOR Rungkut Mapan',
-        jenis: 'Indoor',
-        harga: 100000
+        id: this.$route.params.id || '',
+        nama: this.$route.query.nama || 'GOR Rungkut Mapan',
+        jenis: this.$route.query.jenis || 'Indoor',
+        harga: Number(this.$route.query.harga) || 70000, // Harga per jam
       },
-      durasi: 1,
+      durasi: Number(this.$route.query.durasi) || 1,
+      jam: this.$route.query.jam || '19:00 - 20:00',
       metodePembayaran: '',
       metodeOptions: [
         { nama: 'Transfer Virtual Account', biaya: 0, logo: 'https://i.ibb.co/x58j2TP/virtual-account.png' },
         { nama: 'Alfamart', biaya: 6500, logo: 'https://i.ibb.co/BKNKtyk/alfamart.png' },
         { nama: 'GoPay', biaya: 3600, logo: 'https://i.ibb.co/jfJ3RVc/gopay.png' },
         { nama: 'ShopeePay', biaya: 3300, logo: 'https://i.ibb.co/zfgKmjk/shopeepay.png' }
-      ]
+      ],
     };
   },
   computed: {
     total() {
-      return this.lapangan.harga * this.durasi;
+      const biayaSewa = this.lapangan.harga * this.durasi;
+      const biayaMetode = this.metodeOptions.find(m => m.nama === this.metodePembayaran)?.biaya || 0;
+      return biayaSewa + biayaMetode;
     }
   },
   methods: {
@@ -100,7 +115,7 @@ export default {
     },
     submitPembayaran() {
       alert(`Pembayaran berhasil! Metode: ${this.metodePembayaran} | Total: Rp${this.formatRupiah(this.total)}`);
-      // Tambahkan logika API / navigasi di sini
+      this.$router.push({ name: 'Home' }); // Ganti 'Home' sesuai nama route home kamu
     }
   }
 };
@@ -174,6 +189,11 @@ h2 {
   background-color: #f7f7f7;
 }
 
+.metode-pilihan.selected {
+  border-color: #c0392b;
+  background-color: #fdecea;
+}
+
 .logo-bank {
   width: 40px;
   margin-right: 15px;
@@ -213,13 +233,18 @@ input[type='radio'] {
 }
 
 .btn-bayar:disabled {
-  background: #ccc;
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
 .not-logged-in {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 20px;
+  background: #fff3f3;
+  color: #c0392b;
+  border-radius: 12px;
   text-align: center;
-  color: #444;
-  font-size: 16px;
+  font-weight: bold;
 }
 </style>

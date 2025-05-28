@@ -37,7 +37,7 @@
               v-for="(jam, index) in jadwal"
               :key="index"
               class="slot-jam"
-              :class="{ tersedia: jam.tersedia }"
+              :class="{ tersedia: jam.tersedia, selected: jadwalDipilih === jam }"
               @click="pilihJadwal(jam)"
             >
               {{ jam.jam }}
@@ -47,7 +47,23 @@
       </div>
     </div>
 
-    <router-link :to="`/detail-pembayaran/${lapangan.id}`" class="btn-sewa">Lanjut ke Pembayaran</router-link>
+    <div style="text-align:center; margin-top: 20px;">
+      <router-link
+        v-if="jadwalDipilih"
+        :to="{
+          name: 'DetailPembayaran',
+          params: { id: lapangan.id },
+          query: { jam: jadwalDipilih.jam }
+        }"
+        class="btn-sewa"
+      >
+        Lanjut ke Pembayaran
+      </router-link>
+
+      <button v-else class="btn-sewa disabled" disabled>
+        Pilih Jadwal Terlebih Dahulu
+      </button>
+    </div>
   </div>
 </template>
 
@@ -60,7 +76,8 @@ export default {
   data() {
     return {
       lapangan: {},
-      jadwal: []
+      jadwal: [],
+      jadwalDipilih: null
     };
   },
   created() {
@@ -98,7 +115,7 @@ export default {
   methods: {
     pilihJadwal(jam) {
       if (!jam.tersedia) return alert('Jadwal tidak tersedia!');
-      alert(`Kamu memilih jam: ${jam.jam}`);
+      this.jadwalDipilih = jam;
     }
   }
 };
@@ -139,23 +156,24 @@ h1 {
 }
 .badge {
   display: inline-block;
-  background: #ddd;     
+  background: #ddd;
   border-radius: 8px;
   padding: 4px 10px;
   margin-right: 5px;
   font-size: 13px;
-  color: #222;         
+  color: #222;
   font-weight: 600;
 }
 .section {
   margin-bottom: 20px;
 }
 .section h3 {
-  color: #000; 
+  color: #000;
   margin-bottom: 8px;
 }
-.section p, .section ol li {
-  color: #000; 
+.section p,
+.section ol li {
+  color: #000;
 }
 .harga-box {
   background: #f9f9f9;
@@ -207,14 +225,23 @@ h1 {
   background-color: #d4edda;
   border-color: #28a745;
 }
+.slot-jam.selected {
+  border-color: #2ecc71;
+  background-color: #a3e4a3;
+}
 .btn-sewa {
-  display: block;
-  margin: 30px auto 0;
+  display: inline-block;
   background-color: #2ecc71;
   color: white;
   padding: 12px 30px;
   border-radius: 8px;
   text-align: center;
   text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn-sewa.disabled {
+  background-color: #999;
+  cursor: not-allowed;
 }
 </style>
