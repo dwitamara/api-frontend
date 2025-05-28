@@ -16,7 +16,7 @@
         <h3 class="login-title">Masuk ke Akun Anda</h3>
 
         <div class="input-group">
-          <input type="email" placeholder=" " class="form-input" id="email" autocomplete="email" />
+          <input type="email" placeholder=" " class="form-input" id="email" v-model="form.email" autocomplete="email" />
           <label for="email">Email</label>
           <span class="input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1976D2">
@@ -28,7 +28,7 @@
 
         <div class="input-group">
           <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password"
-            autocomplete="new-password" />
+            v-model="form.password" autocomplete="new-password" />
           <label for="password">Password</label>
           <span class="input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
@@ -58,12 +58,13 @@
           <a href="#" class="forgot-password">Lupa password?</a>
         </div>
 
-        <button class="submit-btn">
-          <span>Masuk</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
-            <path d="M10 17l5-5-5-5v10z" />
-          </svg>
-        </button>
+        <button class="submit-btn" @click="login">
+            <span>Masuk</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+              <path d="M10 17l5-5-5-5v10z" />
+            </svg>
+          </button>
+
 
         <p class="register-link">
           Belum punya akun? <router-link to="/register" class="register">Register</router-link>
@@ -84,33 +85,30 @@ export default {
   data() {
     return {
       showPassword: false,
-      showConfirmPassword: false,
+      rememberMe: false,
       form: {
         email: '',
         password: ''
       }
-    }
+    };
   },
   methods: {
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
-    toggleConfirmPassword() {
-      this.showConfirmPassword = !this.showConfirmPassword;
-    },
-
-    /*async login() {
+    async login() {
+      if (!this.form.email || !this.form.password) {
+        alert("Email dan Password harus diisi");
+        return;
+      }
       try {
-        const response = await axios.post('http://localhost:3000' + '/auth/login', {
-          email: this.email,
-          password: this.password
+        const response = await axios.post('http://localhost:3000/auth/login', {
+          email: this.form.email,
+          password: this.form.password
         });
-
         if (response.status === 200 && response.data.accesToken) {
-          // Simpan token ke localStorage
           localStorage.setItem('token', response.data.accesToken);
           localStorage.setItem('user', JSON.stringify(response.data.user));
-
           alert("Login berhasil!");
           this.$router.push('/sewa-lapangan');
         } else {
@@ -123,17 +121,14 @@ export default {
     }
   },
   mounted() {
-    // Cek apakah user sudah login
     const token = localStorage.getItem('token');
     if (token) {
-      this.$router.push('/dashboard'); // Redirect ke dashboard jika sudah login
+      this.$router.push('/dashboard');
     }
-  }*/
   }
 };
-
-
 </script>
+
 
 <style scoped>
 /* Login Page */
