@@ -20,31 +20,27 @@
           <label for="email">Email</label>
           <span class="input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1976D2">
-              <path
-                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
           </span>
         </div>
 
         <div class="input-group">
           <input :type="showPassword ? 'text' : 'password'" placeholder=" " class="form-input" id="password"
-            v-model="form.password" autocomplete="new-password" />
+                 v-model="form.password" autocomplete="new-password" />
           <label for="password">Password</label>
           <span class="input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-              <path
-                d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z" />
+              <path d="M12 17a2 2 0 110-4 2 2 0 010 4zm6-7h-1V7a5 5 0 00-10 0v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm-6-5a3 3 0 013 3v3H9V8a3 3 0 013-3z"/>
             </svg>
           </span>
           <span class="toggle-icon" @click="togglePassword">
             <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2"
-              viewBox="0 0 24 24">
-              <path
-                d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6m0-2a11.77 11.77 0 00-11 8 11.77 11.77 0 0022 0 11.77 11.77 0 00-11-8zm0 5a3 3 0 013 3 3 3 0 01-3 3 3 3 0 010-6z" />
+                 viewBox="0 0 24 24">
+              <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-17.88 0A9.77 9.77 0 0112 6z"/>
             </svg>
             <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#1976D2" viewBox="0 0 24 24">
-              <path
-                d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0 11.6 11.6 0 00-3.3-6.8l2.5-2.5L20.3 1.7l-3.7 3.7A11.77 11.77 0 0012 4a11.77 11.77 0 00-2.4.3L12 6zM12 8a3 3 0 013 3 3 3 0 01-3 3 3 3 0 01-3-3c0-.46.12-.89.33-1.26L12 8z" />
+              <path d="M12 6a9.77 9.77 0 018.94 6 9.77 9.77 0 01-1.56 2.4L20.3 17l-1.4 1.4-16-16L4.3 1.7l2.5 2.5A11.77 11.77 0 001 12a11.77 11.77 0 0022 0A11.6 11.6 0 0020.7 5.2l2.5-2.5L20.3 1.7 16.6 5.4A11.77 11.77 0 0012 4z"/>
             </svg>
           </span>
         </div>
@@ -59,12 +55,11 @@
         </div>
 
         <button class="submit-btn" @click="login">
-            <span>Masuk</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
-              <path d="M10 17l5-5-5-5v10z" />
-            </svg>
-          </button>
-
+          <span>Masuk</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+            <path d="M10 17l5-5-5-5v10z" />
+          </svg>
+        </button>
 
         <p class="register-link">
           Belum punya akun? <router-link to="/register" class="register">Register</router-link>
@@ -74,6 +69,11 @@
       <div class="decoration-circle circle-1"></div>
       <div class="decoration-circle circle-2"></div>
     </div>
+
+    <!-- Router link tombol admin di LUAR .login-page agar bisa diklik -->
+    <router-link to="/admin-login" class="admin-login-btn">
+      Login as Admin
+    </router-link>
   </div>
 </template>
 
@@ -228,6 +228,25 @@ export default {
   padding: 0 5px;
   font-size: 0.8rem;
   color: #1976d2;
+}
+
+.admin-login-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0d47a1;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(13, 71, 161, 0.3);
+  text-decoration: none;
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.admin-login-btn:hover {
+  background-color: #1565c0;
 }
 
 .input-icon {

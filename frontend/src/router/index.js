@@ -6,11 +6,13 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import DetailLapangan from '../views/DetailLapangan.vue';
 import DetailPembayaran from '../views/DetailPembayaran.vue';
+import AdminLogin from '../views/AdminLogin.vue';
+import AdminDashboard from '../views/AdminDashboard.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',          // Disarankan menamai route agar lebih mudah navigasi dengan named routes
+    name: 'Home',
     component: Home,
   },
   {
@@ -34,17 +36,27 @@ const routes = [
     component: Register,
   },
   {
+    path: '/admin-login',
+    name: 'AdminLogin',
+    component: () => import('@/views/AdminLogin.vue'),
+  },
+  {
+    path: '/admin',
+    name: 'AdminDashboard',
+    component: () => import('@/views/AdminDashboard.vue'),
+  },
+  {
     path: '/detail-lapangan/:id',
     name: 'DetailLapangan',
     component: DetailLapangan,
-    props: true,           // props:true supaya parameter id otomatis diterima sebagai prop
+    props: true,
   },
   {
     path: '/detail-pembayaran/:id',
     name: 'DetailPembayaran',
     component: DetailPembayaran,
     props: true,
-  }
+  },
 ];
 
 const router = createRouter({
