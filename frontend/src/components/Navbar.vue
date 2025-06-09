@@ -62,7 +62,7 @@ export default {
 
       this.isLoggedIn = !!token && !!userData;
       this.user = userData ? JSON.parse(userData) : {};
-      this.isReady = true; // Menandakan data siap ditampilkan
+      this.isReady = true;
     },
     logout() {
       localStorage.removeItem("token");
@@ -79,6 +79,7 @@ export default {
 </script>
 
 <style scoped>
+/* Base Navbar Styles */
 .navbar {
   position: fixed;
   top: 0;
@@ -99,29 +100,36 @@ export default {
   color: white;
 }
 
+/* Logo Styles */
 .logo {
   font-size: 1.8rem;
   font-weight: bold;
   color: #FFC107;
   text-decoration: none;
+  white-space: nowrap;
 }
 
+/* Navigation Menu */
 .menu-items {
   display: flex;
-  gap: 4rem;
+  gap: 2rem;
+  align-items: center;
 }
 
 .menu-items a {
   color: white;
   text-decoration: none;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
 .menu-items a.router-link-exact-active {
   border-bottom: 2px solid #90caf9;
 }
 
+/* Auth Buttons */
 .auth-buttons {
   display: flex;
   gap: 1rem;
@@ -133,6 +141,7 @@ export default {
   border-radius: 4px;
   font-weight: 500;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .login {
@@ -154,6 +163,7 @@ export default {
   background-color: #64b5f6;
 }
 
+/* User Info */
 .user-info {
   display: flex;
   align-items: center;
@@ -172,9 +182,92 @@ export default {
   color: #fff;
   font-weight: 500;
   font-size: 1rem;
+  white-space: nowrap;
 }
 
-/* Modal Overlay */
+/* Hamburger Menu (Mobile) */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .menu-items {
+    gap: 1.5rem;
+  }
+  
+  .menu-items a {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .hamburger {
+    display: block;
+    order: 1;
+  }
+  
+  .logo {
+    order: 2;
+    font-size: 1.5rem;
+    margin-right: auto;
+    padding-left: 1rem;
+  }
+  
+  .auth-buttons, .user-info {
+    order: 3;
+  }
+  
+  .menu-items {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+    order: 4;
+  }
+  
+  .menu-items.active {
+    display: flex;
+  }
+  
+  .menu-items a {
+    padding: 0.5rem 0;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1.3rem;
+  }
+  
+  .auth-buttons {
+    gap: 0.5rem;
+  }
+  
+  .login, .register {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .username {
+    display: none;
+  }
+}
+
+/* Modal Styles (Tetap sama seperti sebelumnya) */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -188,21 +281,18 @@ export default {
   z-index: 2000;
 }
 
-/* Modal Content */
 .modal-content {
   background: #fff;
-  padding: 2.5rem 3rem;
+  padding: 2rem;
   border-radius: 16px;
-  width: 100%;
+  width: 90%;
   max-width: 500px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   text-align: left;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   animation: fadeIn 0.3s ease;
 }
 
-/* Animasi lembut */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -214,20 +304,18 @@ export default {
   }
 }
 
-/* Judul */
 .modal-content h2 {
   margin-top: 0;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #0d47a1;
   border-bottom: 2px solid #e0e0e0;
   padding-bottom: 0.75rem;
   margin-bottom: 1.5rem;
 }
 
-/* Isi paragraf */
 .modal-content p {
   margin: 0.75rem 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #333;
   line-height: 1.6;
 }
@@ -237,22 +325,21 @@ export default {
   font-weight: 600;
 }
 
-/* Tombol Logout */
 .logout-button {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   background-color: #d32f2f;
   color: white;
   border: none;
-  padding: 0.7rem 1.6rem;
+  padding: 0.6rem 1.4rem;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%;
 }
 
 .logout-button:hover {
   background-color: #b71c1c;
 }
-
 </style>
