@@ -41,7 +41,7 @@ const routes = [
     component: () => import('@/views/AdminLogin.vue'),
   },
   {
-    path: '/admin',
+    path: '/admin-dashboard',
     name: 'AdminDashboard',
     component: () => import('@/views/AdminDashboard.vue'),
   },

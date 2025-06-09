@@ -3,16 +3,16 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="profile">
-        <img src="https://via.placeholder.com/80" alt="profile" />
+        <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=admin" alt="profile" />
         <div class="profile-info">
-          <h3>si_admin</h3>
+          <h3>{{ adminName }}</h3>
           <span>Admin</span>
         </div>
       </div>
       <nav class="nav-menu">
         <ul>
-          <li><a href="#"><i class="icon-user"></i> Kelola User</a></li>
-          <li><a href="#"><i class="icon-field"></i> Manajemen Lapangan</a></li>
+          <li><router-link to="/admin/users">Kelola User</router-link></li>
+          <li><a href="#">Manajemen Lapangan</a></li>
         </ul>
       </nav>
       <div class="bottom-settings">
@@ -26,13 +26,19 @@
         <h2>Dashboard Admin</h2>
         <p>Selamat datang di sistem manajemen!</p>
       </div>
+      <router-view></router-view>
     </main>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AdminDashboard'
+  name: 'AdminDashboard',
+  data() {
+    return {
+      adminName: localStorage.getItem('adminName') || 'si_admin',
+    };
+  },
 };
 </script>
 
@@ -41,13 +47,13 @@ export default {
   display: flex;
   height: 100vh;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f9f9f9;
+  background-color: #e3f2fd;
 }
 
 /* Sidebar */
 .sidebar {
   width: 240px;
-  background-color: #2e563c;
+  background-color: #1e3a8a; /* biru gelap */
   color: white;
   display: flex;
   flex-direction: column;
@@ -78,7 +84,7 @@ export default {
 
 .profile-info span {
   font-size: 0.9rem;
-  color: #c8e6c9;
+  color: #cfd8dc;
 }
 
 .nav-menu ul {
@@ -95,15 +101,14 @@ export default {
   color: white;
   text-decoration: none;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: block;
   padding: 10px;
   border-radius: 8px;
   transition: background 0.3s;
 }
 
-.nav-menu a:hover {
+.nav-menu a:hover,
+.nav-menu a.router-link-active {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -114,9 +119,6 @@ export default {
 .bottom-settings a {
   color: #ffffffcc;
   text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
   font-weight: 500;
   padding: 10px;
   border-radius: 8px;
@@ -133,10 +135,11 @@ export default {
   padding: 40px;
   flex: 1;
   overflow-y: auto;
+  background-color: #e3f2fd;
 }
 
 .content-header h2 {
-  color: #2e563c;
+  color: #1e3a8a;
   margin-bottom: 10px;
 }
 </style>
