@@ -1,54 +1,44 @@
 <template>
-  <div class="admin-dashboard">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="profile">
-        <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=admin" alt="profile" />
-        <div class="profile-info">
-          <h3>{{ adminName }}</h3>
-          <span>Admin</span>
-        </div>
+  <aside class="sidebar">
+    <div class="profile">
+      <img src="https://api.dicebear.com/7.x/fun-emoji/svg?seed=admin" alt="profile" />
+      <div class="profile-info">
+        <h3>{{ userName }}</h3>
+        <span>Admin</span>
       </div>
-      <nav class="nav-menu">
-        <ul>
-          <li><router-link to="/admin/users">Kelola User</router-link></li>
-          <li><a href="#">Manajemen Lapangan</a></li>
-        </ul>
-      </nav>
-      <div class="bottom-settings">
-        <a href="#"><i class="icon-settings"></i> Settings</a>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <div class="content-header">
-        <h2>Dashboard Admin</h2>
-        <p>Selamat datang di sistem manajemen!</p>
-      </div>
-      <router-view></router-view>
-    </main>
-  </div>
+    </div>
+    <nav class="nav-menu">
+      <ul>
+        <li><router-link to="/admin/users">Kelola User</router-link></li>
+        <li><router-link to="/admin/lapangan">Manajemen Lapangan</router-link></li>
+      </ul>
+    </nav>
+    <button @click="logout" class="logout-button">Logout</button>
+  </aside>
 </template>
 
 <script>
 export default {
-  name: 'AdminDashboard',
+  name: 'Sidebar',
   data() {
     return {
       adminName: localStorage.getItem('adminName') || 'si_admin',
     };
   },
+    methods: {
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      this.isLoggedIn = false;
+      this.showModal = false;
+      this.$router.push("/login");
+    }
+  }
 };
 </script>
 
+
 <style scoped>
-.admin-dashboard {
-  display: flex;
-  height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #e3f2fd;
-}
 
 /* Sidebar */
 .sidebar {
@@ -112,11 +102,11 @@ export default {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.bottom-settings {
+.bottom-logout {
   margin-top: auto;
 }
 
-.bottom-settings a {
+.bottom-logout a {
   color: #ffffffcc;
   text-decoration: none;
   font-weight: 500;
@@ -125,7 +115,7 @@ export default {
   transition: background 0.3s;
 }
 
-.bottom-settings a:hover {
+.bottom-logout a:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 

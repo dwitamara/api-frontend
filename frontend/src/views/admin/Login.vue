@@ -48,6 +48,10 @@
         <span>Butuh bantuan? Hubungi admin pusat</span>
       </div>
     </div>
+
+    <router-link to="/login" class="user-login-btn">
+      Kembali ke halaman utama
+    </router-link>
   </div>
 </template>
 
@@ -75,15 +79,19 @@ export default {
         const res = await axios.post('http://localhost:3000/auth/login', this.form);
         const user = res.data.user;
 
-        if (user.role !== 'Admin') {
+        // Validasi role
+        if (!user || user.role !== 'Admin') {
           alert('Akses ditolak. Anda bukan admin.');
           return;
         }
 
+        // Simpan token dan data user
         localStorage.setItem('token', res.data.accessToken);
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('adminName', user.name); // untuk ditampilkan di dashboard
 
-        this.$router.push('/admin');
+        // Arahkan ke halaman utama admin
+        this.$router.push('/admin/dashboard');
       } catch (err) {
         alert(err.response?.data?.message || 'Login gagal.');
       }
@@ -91,6 +99,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 /* Login Page */
@@ -192,7 +201,8 @@ export default {
   color: #1976d2;
 }
 
-.admin-login-btn {
+
+.user-login-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -207,7 +217,7 @@ export default {
   z-index: 999;
 }
 
-.admin-login-btn:hover {
+.user-login-btn:hover {
   background-color: #1565c0;
 }
 

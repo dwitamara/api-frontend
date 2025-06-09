@@ -71,7 +71,7 @@
     </div>
 
     <!-- Router link tombol admin di LUAR .login-page agar bisa diklik -->
-    <router-link to="/admin-login" class="admin-login-btn">
+    <router-link to="/admin/login" class="admin-login-btn">
       Login as Admin
     </router-link>
   </div>
