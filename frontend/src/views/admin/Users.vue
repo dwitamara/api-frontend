@@ -58,7 +58,7 @@ import axios from 'axios';
 
 export default {
   components: {
-    Navbar
+    Sidebar
   },
   setup() {
     const users = ref([]);
