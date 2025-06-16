@@ -92,7 +92,7 @@
           </thead>
           <tbody>
             <tr v-for="(lapangan, index) in filteredLapangan" :key="lapangan.id">
-              <td>{{ index + 1 }}</td>
+              <td class="address-info">{{ index + 1 }}</td>
               <td>
                 <div class="field-info">
                   <strong>{{ lapangan.nama }}</strong>
@@ -100,7 +100,7 @@
                 </div>
               </td>
               <td>
-                <span class="sport-tag" :class="getSportClass(lapangan.tipeLapangan)">
+                <span class="address-info" :class="getSportClass(lapangan.tipeLapangan)">
                   {{ lapangan.tipeLapangan }}
                 </span>
               </td>
@@ -109,8 +109,8 @@
                   {{ lapangan.alamat }}
                 </div>
               </td>
-              <td class="price-cell">Rp {{ formatPrice(lapangan.harga) }}</td>
-              <td>{{ lapangan.noTelp }}</td>
+              <td class="address-info">Rp {{ formatPrice(lapangan.harga) }}</td>
+              <td class="address-info">{{ lapangan.noTelp }}</td>
               <td>
                 <div class="action-buttons">
                   <button class="view-btn" @click="viewLapangan(lapangan)" title="Lihat Detail">
@@ -333,7 +333,6 @@ export default {
       isEditing: false,
       selectedLapangan: null,
       formData: {
-        id: '',
         nama: '',
         alamat: '',
         harga: '',
@@ -386,12 +385,13 @@ export default {
       this.loading = true;
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/lapangan/admin', {
+        const response = await axios.get('http://localhost:3000/lapangan', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        this.lapanganList = response.data;
+        this.lapanganList = response.data.data;
+        console.log('Response lapangan:', response.data); 
       } catch (error) {
         console.error('Error fetching lapangan:', error);
         alert('Gagal memuat data lapangan: ' + (error.response?.data?.message || error.message));
@@ -444,7 +444,7 @@ export default {
 
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:3000/lapangan/admin/${id}`, {
+        await axios.delete(`http://localhost:3000/lapangan/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -553,9 +553,10 @@ export default {
 
 <style scoped>
 .lapangan-page {
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f5f9ff;
   min-height: 100vh;
+  padding: 20px;
 }
 
 /* Loading */
@@ -597,33 +598,35 @@ export default {
   color: #0d47a1;
   font-size: 2rem;
   margin: 0;
+  font-weight: 700;
 }
 
 .add-btn {
-  background: linear-gradient(to right, #1976d2, #2196f3);
+  background: linear-gradient(135deg, #1976d2, #2196f3);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  transition: all 0.3s;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
 }
 
 .add-btn:hover {
-  background: linear-gradient(to right, #1565c0, #1976d2);
+  background: linear-gradient(135deg, #1565c0, #1976d2);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+  box-shadow: 0 6px 25px rgba(25, 118, 210, 0.4);
 }
 
 /* Stats Cards */
 .stats-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   margin-bottom: 30px;
 }
@@ -631,43 +634,51 @@ export default {
 .stat-card {
   background: white;
   padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
-  gap: 15px;
-  transition: transform 0.3s;
+  gap: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 .stat-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #1976d2, #2196f3);
+  color: white;
+  font-size: 24px;
 }
 
 .stat-info h3 {
-  font-size: 1.8rem;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: 700;
   margin: 0;
-  color: #333;
+  color: #1a1a1a;
+  line-height: 1.2;
 }
 
 .stat-info p {
-  margin: 5px 0 0 0;
+  margin: 8px 0 0 0;
   color: #666;
-  font-size: 0.9rem;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* Search and Filter */
 .search-filter-section {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 25px;
   align-items: center;
@@ -676,54 +687,74 @@ export default {
 .search-box {
   position: relative;
   flex: 1;
+  min-width: 280px;
   max-width: 400px;
 }
 
 .search-input {
   width: 100%;
-  padding: 12px 15px 12px 45px;
-  border: 2px solid #e3f2fd;
-  border-radius: 10px;
-  font-size: 1rem;
+  padding: 14px 18px 14px 50px;
+  border: 2px solid #e8f2ff;
+  border-radius: 12px;
+  font-size: 14px;
   background-color: white;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
+  font-weight: 400;
 }
 
 .search-input:focus {
   outline: none;
+  color: #333;
   border-color: #1976d2;
-  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.15);
+  background-color: #fafbff;
+}
+
+.search-input::placeholder {
+  color: #333;
 }
 
 .search-icon {
   position: absolute;
-  left: 15px;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
+  color: #9e9e9e;
+  font-size: 18px;
 }
 
 .filter-select {
-  padding: 12px 15px;
-  border: 2px solid #e3f2fd;
-  border-radius: 10px;
+  padding: 10px 18px; /* kurangi padding vertikal biar gak terlalu tinggi */
+  border: 2px solid #e8f2ff;
+  border-radius: 12px;
   background-color: white;
-  font-size: 1rem;
+  color: #333333; /* warna teks hitam gelap */
+  font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 150px;
+  line-height: 1.4; /* agar teks lebih rapi */
+  appearance: none; /* hilangkan default arrow jika ingin custom */
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .filter-select:focus {
   outline: none;
   border-color: #1976d2;
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.15);
 }
+
 
 /* Table */
 .table-container {
   background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .lapangan-table {
@@ -732,45 +763,448 @@ export default {
 }
 
 .lapangan-table th {
-  background: linear-gradient(to right, #1976d2, #2196f3);
+  background: linear-gradient(135deg, #1976d2, #2196f3);
   color: white;
-  padding: 25px;
+  padding: 20px 24px;
   text-align: left;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .lapangan-table td {
-  padding: 15px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f5f5f5;
   vertical-align: middle;
 }
 
 .lapangan-table tr:hover {
-  background-color: #f8f9ff;
+  background-color: #f8fbff;
 }
 
 .field-info strong {
   display: block;
-  color: #333;
+  color: #1a1a1a;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  font-size: 15px;
 }
 
 .field-info small {
   color: #666;
-  font-size: 0.85rem;
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .address-info {
-  max-width: 200px;
-  line-height: 1.4;
+  max-width: 220px;
+  line-height: 1.5;
   color: #555;
+  font-size: 13px;
 }
+
 .no-data {
   text-align: center;
-  padding: 40px 20px;
+  padding: 60px 20px;
   color: #666;
+  font-size: 16px;
+}
+
+/* ============= MODAL STYLES ============= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 30px 20px 30px;
+  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(135deg, #f8fbff, #ffffff);
+}
+
+.modal-header h3 {
+  color: #1a1a1a;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.close-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #666;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.close-btn:hover {
+  background: #e3f2fd;
+  color: #1976d2;
+  transform: scale(1.05);
+}
+
+/* Modal Form Styles */
+.modal-form {
+  padding: 30px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.form-input {
+  padding: 14px 16px;
+  border: 2px solid #e8f2ff;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: white;
+  color: #333;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.15);
+  background-color: white;
+  color: #1a1a1a;
+}
+
+.form-input::placeholder {
+  color: #9e9e9e;
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+select.form-input {
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23666" d="M6 8L2 4h8z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  appearance: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cancel-btn {
+  padding: 12px 24px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: #666;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cancel-btn:hover {
+  border-color: #bdbdbd;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.save-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #1976d2, #2196f3);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+}
+
+.save-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1565c0, #1976d2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(25, 118, 210, 0.4);
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Modal View Detail Styles */
+.view-modal {
+  max-width: 700px;
+}
+
+.view-content {
+  padding: 30px;
+}
+
+.view-image {
+  margin-bottom: 30px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.view-image img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.view-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item label {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-item span,
+.detail-item p {
+  color: #1a1a1a;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.price-highlight {
+  color: #27ae60;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.sport-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+  color: #1976d2;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: 1px solid rgba(25, 118, 210, 0.2);
+}
+
+/* Sport-specific colors */
+.sport-tag.futsal { background: linear-gradient(135deg, #e8f5e8, #f1f8e9); color: #2e7d32; border-color: rgba(46, 125, 50, 0.2); }
+.sport-tag.badminton { background: linear-gradient(135deg, #fff3e0, #fef7ed); color: #f57c00; border-color: rgba(245, 124, 0, 0.2); }
+.sport-tag.basket { background: linear-gradient(135deg, #fce4ec, #fdf2f8); color: #c2185b; border-color: rgba(194, 24, 91, 0.2); }
+.sport-tag.voli { background: linear-gradient(135deg, #f3e5f5, #faf5ff); color: #7b1fa2; border-color: rgba(123, 31, 162, 0.2); }
+.sport-tag.tenis { background: linear-gradient(135deg, #e0f2f1, #f0fdfa); color: #00695c; border-color: rgba(0, 105, 92, 0.2); }
+
+/* Animations */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .lapangan-page {
+    padding: 15px;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-box {
+    max-width: none;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .modal-content {
+    margin: 10px;
+    max-width: none;
+    width: calc(100% - 20px);
+  }
+  
+  .modal-header {
+    padding: 20px 20px 15px 20px;
+  }
+  
+  .modal-header h3 {
+    font-size: 20px;
+  }
+  
+  .modal-form,
+  .view-content {
+    padding: 20px;
+  }
+  
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .lapangan-table {
+    font-size: 13px;
+  }
+  
+  .lapangan-table th,
+  .lapangan-table td {
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+  
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .stat-info h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Scrollbar Styling */
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Focus styles for accessibility */
+.form-input:focus,
+.cancel-btn:focus,
+.save-btn:focus,
+.close-btn:focus {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
 }
 </style>

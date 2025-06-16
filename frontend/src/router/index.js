@@ -16,6 +16,7 @@ import AdminLogin from '../views/admin/Login.vue';
 import AdminDashboard from '../views/admin/Dashboard.vue';
 import AdminUsers from '../views/admin/Users.vue';
 import AdminLapangan from '../views/admin/Lapangan.vue';
+import AdminPemesanan from '../views/admin/Pemesanan.vue';
 
 const routes = [
   {
@@ -86,6 +87,11 @@ const routes = [
     path: '/admin/lapangan',
     name: 'AdminLapangan',
     component: AdminLapangan,
+  },
+    {
+    path: '/admin/pemesanan',
+    name: 'AdminPemesanan',
+    component: AdminPemesanan,
   },
 ];
 
