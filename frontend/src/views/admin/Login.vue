@@ -86,9 +86,9 @@ export default {
         }
 
         // Simpan token dan data user
-        localStorage.setItem('token', res.data.accessToken);
+        localStorage.setItem('token', res.data.accesToken);
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('adminName', user.name); // untuk ditampilkan di dashboard
+        localStorage.setItem('adminName', user.username);
 
         // Arahkan ke halaman utama admin
         this.$router.push('/admin/dashboard');

@@ -23,13 +23,14 @@
       <ul>
         <li><router-link to="/admin/users" @click="closeSidebar">Kelola User</router-link></li>
         <li><router-link to="/admin/lapangan" @click="closeSidebar">Manajemen Lapangan</router-link></li>
-      </ul>
+        <li><router-link to="/admin/pemesanan" @click="closeSidebar">Riwayat Pemesanan</router-link></li>
+       </ul>
     </nav>
     <button @click="logout" class="logout-button">Logout</button>
   </aside>
 
   <!-- Main Content -->
-  <main class="main-content">
+  <main class="main-content" :class="{ 'content-with-sidebar': !isMobile }">
     <!-- Konten utama Anda di sini -->
     <slot></slot>
   </main>
@@ -127,9 +128,14 @@ export default {
 
 /* Main Content */
 .main-content {
-  /* margin-left: 240px; */
   padding: 20px;
   transition: margin-left 0.3s ease;
+  min-height: 100vh;
+}
+
+/* Desktop: Content with sidebar */
+.content-with-sidebar {
+  margin-left: 240px;
 }
 
 /* Responsive Styles */
@@ -148,6 +154,17 @@ export default {
   
   .main-content {
     margin-left: 0;
+  }
+  
+  .content-with-sidebar {
+    margin-left: 0;
+  }
+}
+
+/* Desktop - Sidebar always visible */
+@media (min-width: 769px) {
+  .sidebar {
+    transform: translateX(0);
   }
 }
 

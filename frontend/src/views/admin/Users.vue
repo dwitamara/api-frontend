@@ -3,7 +3,7 @@
     <Navbar />
     <div class="users-management">
       <h2>Kelola Pengguna</h2>
-      
+
       <div class="toolbar">
         <button @click="refreshData" class="refresh-btn">
           <i class="fas fa-sync-alt"></i> Refresh
@@ -15,47 +15,16 @@
           class="search-input"
         >
       </div>
-      
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Nomor HP</th>
-              <th>Tanggal Bergabung</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(user, index) in filteredUsers" :key="user.id">
-              <td>{{ index + 1 }}</td>
-              <td>{{ user.username }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.phone || '-' }}</td>
-              <td>{{ formatDate(user.created_at) }}</td>
-              <td class="actions">
-                <button @click="confirmDelete(user)" class="delete-btn">
-                  <i class="fas fa-trash-alt"></i> Hapus
-                </button>
-              </td>
-            </tr>
-            <tr v-if="filteredUsers.length === 0">
-              <td colspan="6" class="no-data">Tidak ada data pengguna</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+
+      <router-view></router-view>
+    </div> 
   </div>
 </template>
 
 <script>
-import Navbar from '@/components/Navbar.vue';
-import Sidebar from '@/components/Sidebar.vue';
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
+import Sidebar from '@/components/Sidebar.vue';
 
 export default {
   components: {Sidebar},
@@ -63,7 +32,6 @@ export default {
     const users = ref([]);
     const searchQuery = ref('');
 
-    // Ambil data dari API
     const fetchUsers = async () => {
       try {
         const response = await axios.get('http://localhost:3000/user/users');
@@ -74,13 +42,11 @@ export default {
       }
     };
 
-    // Format tanggal
     const formatDate = (dateString) => {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(dateString).toLocaleDateString('id-ID', options);
     };
 
-    // Filter data berdasarkan pencarian
     const filteredUsers = computed(() => {
       const query = searchQuery.value.toLowerCase();
       return users.value.filter(user => 
@@ -90,7 +56,6 @@ export default {
       );
     });
 
-    // Hapus user
     const confirmDelete = (user) => {
       if (confirm(`Apakah Anda yakin ingin menghapus ${user.username}?`)) {
         deleteUser(user.id);
@@ -108,12 +73,10 @@ export default {
       }
     };
 
-    // Refresh data
     const refreshData = () => {
       fetchUsers();
     };
 
-    // Ambil data saat komponen dimuat
     onMounted(() => {
       fetchUsers();
     });
@@ -132,121 +95,31 @@ export default {
 
 <style scoped>
 .users-management {
-  padding: 20px;
-  margin-left: 250px; /* Sesuaikan dengan lebar navbar */
-}
-
-h2 {
-  color: #1e3a8a;
-  margin-bottom: 20px;
+  padding: 40px;
+  background-color: #e3f2fd;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .toolbar {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
+}
+
+.search-input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .refresh-btn {
   background-color: #1e3a8a;
   color: white;
   border: none;
-  padding: 8px 15px;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 5px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.search-input {
-  padding: 8px 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 250px;
-}
-
-.table-container {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th, td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #1e3a8a;
-  color: white;
-  position: sticky;
-  top: 0;
-}
-
-tr:hover {
-  background-color: #f5f5f5;
-}
-
-.actions {
-  display: flex;
-  gap: 5px;
-}
-
-.delete-btn {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.no-data {
-  text-align: center;
-  padding: 20px;
-  color: #666;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .users-management {
-    margin-left: 0;
-    padding: 15px;
-  }
-  
-  .toolbar {
-    flex-direction: column;
-  }
-  
-  .search-input {
-    width: 100%;
-  }
-  
-  th, td {
-    padding: 8px 10px;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .users-management {
-    padding: 10px;
-  }
-  
-  h2 {
-    font-size: 1.3rem;
-  }
 }
 </style> -->
 
@@ -354,8 +227,8 @@ tr:hover {
                 </div>
               </td>
               <td>{{ user.email }}</td>
-              <td>{{ user.phone || '-' }}</td>
-              <td>{{ formatDate(user.created_at) }}</td>
+              <td>{{ user.nomor || '-' }}</td>
+              <td>{{ formatDate(user.createdAt) }}</td>
               <td>
                 <span class="status-badge status-active">
                   Aktif
@@ -366,13 +239,13 @@ tr:hover {
                   <button class="view-btn" @click="viewUser(user)" title="Lihat Detail">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                    </svg>
+                    </svg> Detail
                   </button>
-                  <button class="delete-btn" @click="confirmDelete(user)" title="Hapus">
+                  <!-- <button class="delete-btn" @click="confirmDelete(user)" title="Hapus">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                     </svg>
-                  </button>
+                  </button> -->
                 </div>
               </td>
             </tr>
@@ -421,12 +294,12 @@ tr:hover {
             
             <div class="detail-item">
               <label>Nomor HP:</label>
-              <span>{{ selectedUser.phone || 'Tidak tersedia' }}</span>
+              <span>{{ selectedUser.nomor || 'Tidak tersedia' }}</span>
             </div>
             
             <div class="detail-item">
               <label>Tanggal Bergabung:</label>
-              <span>{{ formatDate(selectedUser.created_at) }}</span>
+              <span>{{ formatDate(selectedUser.createdAt) }}</span>
             </div>
             
             <div class="detail-item">
@@ -483,14 +356,21 @@ export default {
     async fetchUsers() {
       this.loading = true;
       try {
-        const response = await axios.get('http://localhost:3000/user/users');
-        this.users = response.data;
-      } catch (error) {
-        console.error('Gagal mengambil data pengguna:', error);
-        alert('Gagal memuat data pengguna: ' + (error.response?.data?.message || error.message));
-      } finally {
-        this.loading = false;
+    const token = localStorage.getItem('token'); 
+    const response = await axios.get('http://localhost:3000/user/all-user', {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
+    });
+    localStorage.getItem('token');
+    this.users = response.data.data;
+    console.log('Data dari API:', response.data);
+  } catch (error) {
+    console.error('Gagal mengambil data pengguna:', error);
+    alert('Gagal memuat data pengguna: ' + (error.response?.data?.message || error.message));
+  } finally {
+    this.loading = false;
+  }
     },
     
     formatDate(dateString) {
@@ -676,6 +556,7 @@ export default {
   border: 2px solid #e3f2fd;
   border-radius: 10px;
   font-size: 1rem;
+  color: #333;
   background-color: white;
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -720,6 +601,7 @@ export default {
   padding: 15px 20px;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
+  color: #333;
 }
 
 .users-table tr:hover {
@@ -788,11 +670,13 @@ export default {
 
 .view-btn {
   background-color: #e3f2fd;
+  padding: 20px 40px;
   color: #1976d2;
 }
 
 .view-btn:hover {
   background-color: #1976d2;
+  padding: 20px 40px;
   color: white;
 }
 
@@ -934,12 +818,14 @@ export default {
   
   .search-box {
     max-width: none;
+    color: #333;
   }
   
   .users-table th,
   .users-table td {
     padding: 10px;
     font-size: 0.9rem;
+    color: #333;
   }
   
   .user-info {

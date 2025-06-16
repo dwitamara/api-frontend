@@ -3,15 +3,15 @@
     <h1>Pilih Lapangan</h1>
     <div class="lapangan-grid">
       <div v-for="lapangan in lapanganList" :key="lapangan.id" class="lapangan-card">
-        <img :src="lapangan.foto" alt="Foto Lapangan" class="lapangan-foto" />
+        <img :src="lapangan.linkGambar" alt="Foto Lapangan" class="lapangan-foto" />
         <div class="lapangan-info">
           <h2>{{ lapangan.nama }}</h2>
           <div class="lapangan-meta">
-            <span class="rating">⭐ {{ lapangan.rating }}</span>
-            <span class="lokasi">• {{ lapangan.lokasi }}</span>
+            <span class="rating">⭐ 4.8</span>
+            <span class="lokasi">• {{ lapangan.alamat }}</span>
           </div>
           <div class="lapangan-icons">
-            <span v-for="jenis in lapangan.jenis" :key="jenis" class="jenis-icon">🏟 {{ jenis }}</span>
+            <span class="jenis-icon">🏟 {{ lapangan.tipeLapangan }}</span>
           </div>
           <p class="harga">Mulai <strong>Rp{{ lapangan.harga.toLocaleString() }}</strong> /sesi</p>
           <router-link :to="`/detail-lapangan/${lapangan.id}`" class="btn-lihat">Lihat Detail</router-link>
@@ -22,23 +22,26 @@
 </template>
 
 <script>
-import GORRungkut from '@/assets/gor_rungkut.jpeg'
+import axios from 'axios'
 
 export default {
   name: 'SewaLapangan',
   data() {
     return {
-      lapanganList: [
-        { 
-          id: 1, 
-          nama: 'GOR Rungkut Mapan Timur', 
-          jenis: ['Futsal', 'Badminton'], 
-          harga: 70000,
-          rating: 5.0,
-          lokasi: 'Surabaya',
-          foto: GORRungkut
-        }
-      ]
+      lapanganList: []
+    }
+  },
+  mounted() {
+    this.fetchLapangan()
+  },
+  methods: {
+    async fetchLapangan() {
+      try {
+        const response = await axios.get('http://localhost:3000/lapangan')
+        this.lapanganList = response.data.data
+      } catch (error) {
+        console.error('Gagal mengambil data lapangan:', error)
+      }
     }
   }
 }
@@ -46,7 +49,7 @@ export default {
 
 <style scoped>
 .sewa-container h1 {
-  color: #222; /* warna gelap agar jelas */
+  color: #222;
 }
 .lapangan-grid {
   display: flex;
@@ -71,7 +74,7 @@ export default {
   object-fit: cover;
 }
 .lapangan-info h2 {
-  color: #222; /* warna gelap */
+  color: #222;
   margin: 0;
 }
 .lapangan-meta {
