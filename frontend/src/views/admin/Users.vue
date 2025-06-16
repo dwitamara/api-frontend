@@ -3,7 +3,7 @@
     <Navbar />
     <div class="users-management">
       <h2>Kelola Pengguna</h2>
-      
+
       <div class="toolbar">
         <button @click="refreshData" class="refresh-btn">
           <i class="fas fa-sync-alt"></i> Refresh
@@ -15,13 +15,16 @@
           class="search-input"
         >
       </div>
+
+      <!-- Tempat router-view -->
       <router-view></router-view>
-    </main>
+    </div> <!-- Penutup .users-management -->
   </div>
 </template>
 
 <script>
-import Navbar from '@/components/Navbar.vue';
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
 import Sidebar from '@/components/Sidebar.vue';
 
 export default {
@@ -32,7 +35,6 @@ export default {
     const users = ref([]);
     const searchQuery = ref('');
 
-    // Ambil data dari API
     const fetchUsers = async () => {
       try {
         const response = await axios.get('http://localhost:3000/user/users');
@@ -43,13 +45,11 @@ export default {
       }
     };
 
-    // Format tanggal
     const formatDate = (dateString) => {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(dateString).toLocaleDateString('id-ID', options);
     };
 
-    // Filter data berdasarkan pencarian
     const filteredUsers = computed(() => {
       const query = searchQuery.value.toLowerCase();
       return users.value.filter(user => 
@@ -59,7 +59,6 @@ export default {
       );
     });
 
-    // Hapus user
     const confirmDelete = (user) => {
       if (confirm(`Apakah Anda yakin ingin menghapus ${user.username}?`)) {
         deleteUser(user.id);
@@ -77,12 +76,10 @@ export default {
       }
     };
 
-    // Refresh data
     const refreshData = () => {
       fetchUsers();
     };
 
-    // Ambil data saat komponen dimuat
     onMounted(() => {
       fetchUsers();
     });
@@ -100,23 +97,31 @@ export default {
 </script>
 
 <style scoped>
-.admin-dashboard {
-  display: flex;
-  height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #e3f2fd;
-}
-
-.main-content {
-  margin-left: 240px;
+.users-management {
   padding: 40px;
-  flex: 1;
-  overflow-y: auto;
   background-color: #e3f2fd;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.content-header h2 {
-  color: #1e3a8a;
-  margin-bottom: 10px;
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.refresh-btn {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>
