@@ -8,6 +8,8 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import DetailLapangan from '../views/DetailLapangan.vue';
 import DetailPembayaran from '../views/DetailPembayaran.vue';
+import CariTemanBayar from '../views/CariTemanBayar.vue';
+import Booking from '../views/Booking.vue';
 
 // Admin
 import AdminLogin from '../views/admin/Login.vue';
@@ -26,6 +28,16 @@ const routes = [
     name: 'SewaLapangan',
     component: SewaLapangan,
   },
+  {
+  path: '/cari-teman/:id',
+  name: 'CariTemanBayar',
+  component: () => import('@/views/CariTemanBayar.vue')
+},
+  {
+  path: '/booking/:id',
+  name: 'Booking',
+  component: () => import('@/views/Booking.vue')
+},
   {
     path: '/community',
     name: 'Community',
