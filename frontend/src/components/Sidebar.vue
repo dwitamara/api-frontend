@@ -127,7 +127,7 @@ export default {
 
 /* Main Content */
 .main-content {
-  margin-left: 240px;
+  /* margin-left: 240px; */
   padding: 20px;
   transition: margin-left 0.3s ease;
 }
