@@ -58,7 +58,7 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
 export default {
-  components: {Navbar},
+  components: {Sidebar},
   setup() {
     const users = ref([]);
     const searchQuery = ref('');
