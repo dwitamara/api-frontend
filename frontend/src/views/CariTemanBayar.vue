@@ -186,8 +186,6 @@ p {
 .qris-section {
   margin-top: 30px;
 }
-<<<<<<< Updated upstream
+
 </style>
-=======
-</style>
->>>>>>> Stashed changes
+
