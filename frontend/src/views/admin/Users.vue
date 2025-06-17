@@ -256,7 +256,7 @@ tr:hover {
       <div class="page-header">
         <h1>Manajemen Pengguna</h1>
         <button class="refresh-btn" @click="refreshData">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">Add commentMore actions
             <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
           </svg>
           Refresh
@@ -354,8 +354,8 @@ tr:hover {
                 </div>
               </td>
               <td>{{ user.email }}</td>
-              <td>{{ user.phone || '-' }}</td>
-              <td>{{ formatDate(user.created_at) }}</td>
+              <td>{{ user.nomor || '-' }}</td>
+              <td>{{ formatDate(user.createdAt) }}</td>
               <td>
                 <span class="status-badge status-active">
                   Aktif
@@ -366,13 +366,13 @@ tr:hover {
                   <button class="view-btn" @click="viewUser(user)" title="Lihat Detail">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                    </svg>
+                    </svg> Detail
                   </button>
-                  <button class="delete-btn" @click="confirmDelete(user)" title="Hapus">
+                  <!-- <button class="delete-btn" @click="confirmDelete(user)" title="Hapus">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                     </svg>
-                  </button>
+                  </button> -->
                 </div>
               </td>
             </tr>
@@ -421,12 +421,12 @@ tr:hover {
             
             <div class="detail-item">
               <label>Nomor HP:</label>
-              <span>{{ selectedUser.phone || 'Tidak tersedia' }}</span>
+              <span>{{ selectedUser.nomor || 'Tidak tersedia' }}</span>
             </div>
             
             <div class="detail-item">
               <label>Tanggal Bergabung:</label>
-              <span>{{ formatDate(selectedUser.created_at) }}</span>
+              <span>{{ formatDate(selectedUser.createdAt) }}</span>
             </div>
             
             <div class="detail-item">
@@ -483,14 +483,21 @@ export default {
     async fetchUsers() {
       this.loading = true;
       try {
-        const response = await axios.get('http://localhost:3000/user/users');
-        this.users = response.data;
-      } catch (error) {
-        console.error('Gagal mengambil data pengguna:', error);
-        alert('Gagal memuat data pengguna: ' + (error.response?.data?.message || error.message));
-      } finally {
-        this.loading = false;
+    const token = localStorage.getItem('token'); 
+    const response = await axios.get('http://localhost:3000/user/all-user', {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
+    });
+    localStorage.getItem('token');
+    this.users = response.data.data;
+    console.log('Data dari API:', response.data);
+  } catch (error) {
+    console.error('Gagal mengambil data pengguna:', error);
+    alert('Gagal memuat data pengguna: ' + (error.response?.data?.message || error.message));
+  } finally {
+    this.loading = false;
+  }
     },
     
     formatDate(dateString) {
@@ -676,6 +683,7 @@ export default {
   border: 2px solid #e3f2fd;
   border-radius: 10px;
   font-size: 1rem;
+  color: #333;
   background-color: white;
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -720,6 +728,7 @@ export default {
   padding: 15px 20px;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
+  color: #333;
 }
 
 .users-table tr:hover {
@@ -788,11 +797,13 @@ export default {
 
 .view-btn {
   background-color: #e3f2fd;
+  padding: 20px 40px;
   color: #1976d2;
 }
 
 .view-btn:hover {
   background-color: #1976d2;
+  padding: 20px 40px;
   color: white;
 }
 
@@ -934,12 +945,14 @@ export default {
   
   .search-box {
     max-width: none;
+    color: #333;
   }
   
   .users-table th,
   .users-table td {
     padding: 10px;
     font-size: 0.9rem;
+    color: #333;
   }
   
   .user-info {

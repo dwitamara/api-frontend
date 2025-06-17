@@ -1,18 +1,17 @@
 <template>
-  <div class="booking-management">
+  <div class="booking-page">
     <ResponsiveSidebar>
       <!-- Header -->
       <div class="page-header">
         <div class="header-content">
           <h1>Manajemen Booking</h1>
-          <p>Kelola semua booking lapangan olahraga</p>
         </div>
-        <button class="add-btn" @click="openAddModal">
+        <!-- <button class="add-btn" @click="openAddModal">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
           </svg>
           Tambah Booking
-        </button>
+        </button> -->
       </div>
 
       <!-- Stats Cards -->
@@ -67,50 +66,50 @@
       </div>
 
       <!-- Filters -->
-<div class="search-filter-section">
-  <div class="search-box">
-    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5
-      16 5.91 13.09 3 9.5 3S3 5.91 3 9.5
-      5.91 16 9.5 16c1.61 0 3.09-.59
-      4.23-1.57l.27.28v.79l5 4.99
-      L20.49 19l-4.99-5zm-6 0C7.01 14
-      5 11.99 5 9.5S7.01 5 9.5 5
-      14 7.01 14 9.5 11.99 14 9.5 14z"/>
-    </svg>
-    <input
-      type="text"
-      v-model="searchQuery"
-      placeholder="Cari booking (ID, pengguna, lapangan...)"
-      class="search-input"
-    />
-  </div>
+      <div class="search-filter-section">
+        <div class="search-box">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5
+            16 5.91 13.09 3 9.5 3S3 5.91 3 9.5
+            5.91 16 9.5 16c1.61 0 3.09-.59
+            4.23-1.57l.27.28v.79l5 4.99
+            L20.49 19l-4.99-5zm-6 0C7.01 14
+            5 11.99 5 9.5S7.01 5 9.5 5
+            14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Cari booking (ID, pengguna, lapangan...)"
+            class="search-input"
+          />
+        </div>
 
-  <div class="filter-section">
-    <select v-model="statusFilter" class="filter-select">
-      <option value="">Semua Status</option>
-      <option value="PENDING">Pending</option>
-      <option value="CONFIRMED">Terkonfirmasi</option>
-      <option value="COMPLETED">Selesai</option>
-      <option value="CANCELED">Dibatalkan</option>
-    </select>
+        <div class="filter-section">
+          <select v-model="statusFilter" class="filter-select">
+            <option value="">Semua Status</option>
+            <option value="PENDING">Pending</option>
+            <option value="CONFIRMED">Terkonfirmasi</option>
+            <option value="COMPLETED">Selesai</option>
+            <option value="CANCELED">Dibatalkan</option>
+          </select>
 
-    <input
-      type="date"
-      v-model="dateFilter"
-      class="filter-date"
-      title="Filter berdasarkan tanggal"
-    />
+          <input
+            type="date"
+            v-model="dateFilter"
+            class="filter-date"
+            title="Filter berdasarkan tanggal"
+          />
 
-    <button class="refresh-btn" @click="refreshData" title="Refresh Data">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8
-        c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6
-        s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-      </svg>
-    </button>
-  </div>
-</div>
+          <button class="refresh-btn" @click="refreshData" title="Refresh Data">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8
+              c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6
+              s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
 
       <!-- Loading State -->
       <div v-if="loading" class="loading-container">
@@ -149,23 +148,23 @@
                 </div>
               </td>
               <td>
-                <div class="field-info">
+                <div class="user-details">
                   <strong>{{ booking.detailLapangan?.nama || 'N/A' }}</strong>
-                  <small>{{ booking.detailLapangan?.jenis || 'N/A' }}</small>
+                  <small>{{ booking.detailLapangan?.tipeLapangan || 'N/A' }}</small>
                 </div>
               </td>
               <td>
-                <div class="datetime-info">
+                <div class="user-details">
                   <strong>{{ formatDate(booking.tanggalBooking) }}</strong>
-                  <small>{{ booking.slotWaktu?.waktuMulai || 'N/A' }} - {{ booking.slotWaktu?.waktuSelesai || 'N/A' }}</small>
+                  <small>{{ formatTime(booking.slotWaktu?.jamMulai) }} - {{ formatTime(booking.slotWaktu?.jamSelesai) }}</small>
                 </div>
               </td>
               <td>
                 <span class="price">{{ formatCurrency(booking.totalharga) }}</span>
               </td>
               <td>
-                <span :class="['status-badge', getStatusClass(booking.status)]">
-                  {{ getStatusText(booking.status) }}
+                <span :class="['status-badge', booking.status?.toLowerCase()]">
+                  {{ booking.status }}
                 </span>
               </td>
               <td>
@@ -202,82 +201,59 @@
 
     <!-- Modal Add/Edit Booking -->
     <div v-if="showModal" class="modal-overlay" @click="closeModal">
-      <div class="modal-content" @click.stop>
-        <div class="modal-header">
-          <h3>{{ isEditing ? 'Edit Booking' : 'Tambah Booking Baru' }}</h3>
-          <button class="close-btn" @click="closeModal">×</button>
+  <div class="modal-content" @click.stop>
+    <div class="modal-header">
+      <h3>{{ isEditing ? 'Update Status Booking' : 'Tambah Booking Baru' }}</h3>
+      <button class="close-btn" @click="closeModal">×</button>
+    </div>
+
+    <form @submit.prevent="saveBooking" class="modal-form">
+
+      <!-- Form Booking Baru -->
+      <template v-if="!isEditing">
+        <div class="form-row">
+          <div class="input-group">
+            <label for="userId">Pengguna *</label>
+            <select id="userId" v-model="formData.userId" class="form-input" required>
+              <option value="">Pilih pengguna</option>
+              <option v-for="user in users" :key="user.id" :value="user.id">
+                {{ user.username }} ({{ user.email }})
+              </option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="lapanganId">Lapangan *</label>
+            <select id="lapanganId" v-model="formData.lapanganId" class="form-input" required @change="onLapanganChange">
+              <option value="">Pilih lapangan</option>
+              <option v-for="lapangan in lapanganList" :key="lapangan.id" :value="lapangan.id">
+                {{ lapangan.nama }} - {{ lapangan.tipeLapangan }}
+              </option>
+            </select>
+          </div>
         </div>
-        
-        <form @submit.prevent="saveBooking" class="modal-form">
-          <div class="form-row">
-            <div class="input-group">
-              <label for="userId">Pengguna *</label>
-              <select id="userId" v-model="formData.userId" class="form-input" required>
-                <option value="">Pilih pengguna</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
-                  {{ user.username }} ({{ user.email }})
-                </option>
-              </select>
-            </div>
-            
-            <div class="input-group">
-              <label for="lapanganId">Lapangan *</label>
-              <select id="lapanganId" v-model="formData.lapanganId" class="form-input" required @change="onLapanganChange">
-                <option value="">Pilih lapangan</option>
-                <option v-for="lapangan in lapanganList" :key="lapangan.id" :value="lapangan.id">
-                  {{ lapangan.nama }} - {{ lapangan.tipeLapangan }}
-                </option>
-              </select>
-            </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label for="tanggalBooking">Tanggal Booking *</label>
+            <input type="date" id="tanggalBooking" v-model="formData.tanggalBooking" class="form-input" :min="minDate" required>
           </div>
 
-          <div class="form-row">
-            <div class="input-group">
-              <label for="tanggalBooking">Tanggal Booking *</label>
-              <input 
-                type="date" 
-                id="tanggalBooking"
-                v-model="formData.tanggalBooking" 
-                class="form-input"
-                :min="minDate"
-                required
-              >
-            </div>
-            
-            <div class="input-group">
-              <label for="slotWaktuId">Slot Waktu *</label>
-              <select id="slotWaktuId" v-model="formData.slotWaktuId" class="form-input" required @change="onSlotChange">
-                <option value="">Pilih slot waktu</option>
-                <option v-for="slot in availableSlots" :key="slot.id" :value="slot.id">
-                  {{ slot.waktuMulai }} - {{ slot.waktuSelesai }} (Rp {{ formatPrice(slot.harga) }})
-                </option>
-              </select>
-            </div>
+          <div class="input-group">
+            <label for="slotWaktuId">Slot Waktu *</label>
+            <select id="slotWaktuId" v-model="formData.slotWaktuId" class="form-input" required>
+              <option value="">Pilih slot waktu</option>
+              <option v-for="slot in availableSlots" :key="slot.id" :value="slot.id">
+                {{ slot.jamMulai }} - {{ slot.jamSelesai }}
+              </option>
+            </select>
           </div>
+        </div>
 
-          <div class="form-row">
-            <div class="input-group">
-              <label for="status">Status *</label>
-              <select id="status" v-model="formData.status" class="form-input" required>
-                <option value="PENDING">Pending</option>
-                <option value="CONFIRMED">Terkonfirmasi</option>
-                <option value="COMPLETED">Selesai</option>
-                <option value="CANCELED">Dibatalkan</option>
-              </select>
-            </div>
-            
-            <div class="input-group">
-              <label for="totalharga">Total Harga (Rp) *</label>
-              <input 
-                type="number" 
-                id="totalharga"
-                v-model="formData.totalharga" 
-                class="form-input"
-                placeholder="Total harga akan otomatis terisi"
-                readonly
-                required
-              >
-            </div>
+        <div class="form-row">
+          <div class="input-group">
+            <label for="totalharga">Total Harga (Rp) *</label>
+            <input type="number" id="totalharga" v-model="formData.totalharga" class="form-input" required>
           </div>
 
           <div class="input-group">
@@ -286,16 +262,41 @@
               Booking Tersedia
             </label>
           </div>
+        </div>
 
-          <div class="modal-actions">
-            <button type="button" class="cancel-btn" @click="closeModal">Batal</button>
-            <button type="submit" class="save-btn" :disabled="saving">
-              {{ saving ? 'Menyimpan...' : (isEditing ? 'Update' : 'Simpan') }}
-            </button>
+        <div class="form-row">
+          <div class="input-group">
+            <label>
+              <input type="checkbox" v-model="formData.isLookingForPartner" class="form-checkbox">
+              Mencari Partner
+            </label>
           </div>
-        </form>
+        </div>
+      </template>
+
+      <!-- Field status (selalu tampil, editable hanya field ini saat edit) -->
+      <div class="form-row">
+        <div class="input-group">
+          <label for="status">Status *</label>
+          <select id="status" v-model="formData.status" class="form-input" required>
+            <option value="PENDING">Pending</option>
+            <option value="CONFIRMED">Terkonfirmasi</option>
+            <option value="COMPLETED">Selesai</option>
+            <option value="CANCELED">Dibatalkan</option>
+          </select>
+        </div>
       </div>
-    </div>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" @click="closeModal">Batal</button>
+        <button type="submit" class="save-btn" :disabled="saving">
+          {{ saving ? 'Menyimpan...' : (isEditing ? 'Update Status' : 'Simpan') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
     <!-- Modal View Detail Booking -->
     <div v-if="showViewModal" class="modal-overlay" @click="closeViewModal">
@@ -307,16 +308,16 @@
         
         <div class="view-content" v-if="selectedBooking">
           <div class="booking-header">
-            <div class="booking-id">
+            <div class="detail-item">
               <strong>ID Booking: {{ selectedBooking.id }}</strong>
             </div>
-            <span :class="['status-badge', getStatusClass(selectedBooking.status)]">
-              {{ getStatusText(selectedBooking.status) }}
+            <span :class="['status-badge', selectedBooking.status?.toLowerCase()]">
+              {{ selectedBooking.status }}
             </span>
           </div>
           
           <div class="view-details">
-            <div class="detail-section">
+            <div class="detail-item">
               <h4>Informasi Pengguna</h4>
               <div class="detail-item">
                 <label>Username:</label>
@@ -328,7 +329,7 @@
               </div>
             </div>
 
-            <div class="detail-section">
+            <div class="detail-item">
               <h4>Informasi Lapangan</h4>
               <div class="detail-item">
                 <label>Nama Lapangan:</label>
@@ -336,11 +337,11 @@
               </div>
               <div class="detail-item">
                 <label>Jenis Lapangan:</label>
-                <span>{{ selectedBooking.detailLapangan?.jenis || 'N/A' }}</span>
+                <span>{{ selectedBooking.detailLapangan?.tipeLapangan || 'N/A' }}</span>
               </div>
             </div>
 
-            <div class="detail-section">
+            <div class="detail-item">
               <h4>Informasi Booking</h4>
               <div class="detail-item">
                 <label>Tanggal Booking:</label>
@@ -348,7 +349,7 @@
               </div>
               <div class="detail-item">
                 <label>Waktu:</label>
-                <span>{{ selectedBooking.slotWaktu?.waktuMulai || 'N/A' }} - {{ selectedBooking.slotWaktu?.waktuSelesai || 'N/A' }}</span>
+                <span>{{ formatTime(selectedBooking.slotWaktu?.jamMulai) }} - {{ formatTime(selectedBooking.slotWaktu?.jamSelesai) }}</span>
               </div>
               <div class="detail-item">
                 <label>Total Harga:</label>
@@ -359,6 +360,10 @@
                 <span>{{ selectedBooking.tersedia ? 'Ya' : 'Tidak' }}</span>
               </div>
               <div class="detail-item">
+                <label>Mencari Partner:</label>
+                <span>{{ selectedBooking.isLookingForPartner ? 'Ya' : 'Tidak' }}</span>
+              </div>
+              <div class="detail-item">
                 <label>Dibuat pada:</label>
                 <span>{{ formatDateTime(selectedBooking.createdAt) }}</span>
               </div>
@@ -367,23 +372,6 @@
                 <span>{{ formatDateTime(selectedBooking.updatedAt) }}</span>
               </div>
             </div>
-          </div>
-
-          <div class="modal-actions">
-            <button 
-              v-if="selectedBooking.status === 'PENDING'" 
-              class="confirm-action-btn" 
-              @click="updateStatus(selectedBooking.id, 'CONFIRMED')"
-            >
-              Konfirmasi Booking
-            </button>
-            <button 
-              v-if="selectedBooking.status !== 'CANCELED' && selectedBooking.status !== 'COMPLETED'" 
-              class="cancel-action-btn" 
-              @click="updateStatus(selectedBooking.id, 'CANCELED')"
-            >
-              Batalkan Booking
-            </button>
           </div>
         </div>
       </div>
@@ -423,7 +411,8 @@ export default {
         tanggalBooking: '',
         totalharga: 0,
         status: 'PENDING',
-        tersedia: true
+        tersedia: true,
+        isLookingForPartner: false
       }
     };
   },
@@ -498,12 +487,12 @@ export default {
     async fetchUsers() {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/users', {
+        const response = await axios.get('http://localhost:3000/user/all-user', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        this.users = response.data.data || response.data;
+        this.users = response.data.data;
       } catch (error) {
         console.error('Gagal mengambil data users:', error);
       }
@@ -517,26 +506,21 @@ export default {
             Authorization: `Bearer ${token}`
           }
         });
-        this.lapanganList = response.data.data || response.data;
+        this.lapanganList = response.data.data;
       } catch (error) {
         console.error('Gagal mengambil data lapangan:', error);
       }
     },
 
-    async fetchTimeSlots(lapanganId) {
-      if (!lapanganId) {
-        this.availableSlots = [];
-        return;
-      }
-      
+    async fetchTimeSlots() {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:3000/slots/${lapanganId}`, {
+        const response = await axios.get('http://localhost:3000/waktu/all-waktu', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        this.availableSlots = response.data.data || response.data;
+        this.availableSlots = response.data.data;
       } catch (error) {
         console.error('Gagal mengambil slot waktu:', error);
         this.availableSlots = [];
@@ -560,17 +544,20 @@ export default {
           slotWaktuId: this.formData.slotWaktuId,
           tanggalBooking: this.formData.tanggalBooking,
           totalharga: parseInt(this.formData.totalharga),
-          status: this.formData.status,
-          tersedia: this.formData.tersedia
+          tersedia: this.formData.tersedia,
+          isLookingForPartner: this.formData.isLookingForPartner
         };
 
         if (this.isEditing) {
-          // Update existing booking
-          await axios.put(`http://localhost:3000/book/${this.formData.id}`, dataToSend, config);
-          alert('Booking berhasil diupdate!');
+          // Update existing booking - menggunakan endpoint updateBookingStatus
+          await axios.put(`http://localhost:3000/book/update/${this.formData.id}`, 
+            { status: this.formData.status }, 
+            config
+          );
+          alert('Status booking berhasil diupdate!');
         } else {
           // Create new booking
-          await axios.post('http://localhost:3000/book', dataToSend, config);
+          await axios.post('http://localhost:3000/book/create', dataToSend, config);
           alert('Booking baru berhasil ditambahkan!');
         }
         
@@ -603,35 +590,68 @@ export default {
         alert('Gagal mengubah status booking: ' + (error.response?.data?.message || error.message));
       }
     },
-    
-    confirmDelete(booking) {
-      if (confirm(`Apakah Anda yakin ingin menghapus booking ${booking.id}?`)) {
-        this.deleteBooking(booking.id);
-      }
+
+    formatDate(dateString) {
+      if (!dateString) return 'N/A';
+      const options = { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric'
+      };
+      return new Date(dateString).toLocaleDateString('id-ID', options);
     },
-    
-    async deleteBooking(bookingId) {
-      try {
-        const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:3000/book/${bookingId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        await this.fetchBookings();
-        alert('Booking berhasil dihapus');
-      } catch (error) {
-        console.error('Gagal menghapus booking:', error);
-        alert('Gagal menghapus booking: ' + (error.response?.data?.message || error.message));
-      }
+
+    formatTime(timeValue) {
+  if (!timeValue) return 'N/A';
+
+  try {
+    const date = new Date(timeValue);
+    return date.toLocaleTimeString('id-ID', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  } catch (error) {
+    return 'Invalid time';
+  }
+},
+
+   formatDateTime(dateString) {
+      if (!dateString) return 'N/A';
+      const options = { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+      return new Date(dateString).toLocaleDateString('id-ID', options);
+    },
+
+    formatCurrency(amount) {
+      if (!amount) return 'Rp 0';
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR'
+      }).format(amount);
+    },
+
+    getStatusText(status) {
+      const statusMap = {
+        'PENDING': 'Pending',
+        'CONFIRMED': 'Terkonfirmasi',
+        'COMPLETED': 'Selesai',
+        'CANCELED': 'Dibatalkan'
+      };
+      return statusMap[status] || status;
     },
 
     openAddModal() {
       this.isEditing = false;
-      this.resetForm();
+      this.resetFormData();
       this.showModal = true;
     },
-    
+
     editBooking(booking) {
       this.isEditing = true;
       this.formData = {
@@ -642,33 +662,46 @@ export default {
         tanggalBooking: booking.tanggalBooking ? booking.tanggalBooking.split('T')[0] : '',
         totalharga: booking.totalharga,
         status: booking.status,
-        tersedia: booking.tersedia
+        tersedia: booking.tersedia,
+        isLookingForPartner: booking.isLookingForPartner
       };
-      
-      // Fetch time slots for selected lapangan
-      if (booking.lapanganId) {
-        this.fetchTimeSlots(booking.lapanganId);
-      }
-      
       this.showModal = true;
     },
-    
+
     viewBooking(booking) {
       this.selectedBooking = booking;
       this.showViewModal = true;
     },
-    
+
+    async confirmDelete(booking) {
+      if (confirm(`Apakah Anda yakin ingin menghapus booking ini?\nID: ${booking.id}\nPengguna: ${booking.user?.username}`)) {
+        try {
+          const token = localStorage.getItem('token');
+          await axios.delete(`http://localhost:3000/book/delete/${booking.id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          alert('Booking berhasil dihapus!');
+          await this.fetchBookings();
+        } catch (error) {
+          console.error('Gagal menghapus booking:', error);
+          alert('Gagal menghapus booking: ' + (error.response?.data?.message || error.message));
+        }
+      }
+    },
+
     closeModal() {
       this.showModal = false;
-      this.resetForm();
+      this.resetFormData();
     },
-    
+
     closeViewModal() {
       this.showViewModal = false;
       this.selectedBooking = null;
     },
-    
-    resetForm() {
+
+    resetFormData() {
       this.formData = {
         id: '',
         userId: '',
@@ -677,29 +710,32 @@ export default {
         tanggalBooking: '',
         totalharga: 0,
         status: 'PENDING',
-        tersedia: true
+        tersedia: true,
+        isLookingForPartner: false
       };
-      this.availableSlots = [];
     },
-    
-    getStatusText(status) {
-      const statusMap = {
-        'PENDING': 'Menunggu',
-        'CONFIRMED': 'Dikonfirmasi',
-        'CANCELED': 'Dibatalkan'
-      };
-      return statusMap[status] || status;
+
+    onLapanganChange() {
+      // Reset slot waktu ketika lapangan berubah
+      this.formData.slotWaktuId = '';
+      // Bisa ditambahkan logic untuk filter slot berdasarkan lapangan jika diperlukan
     },
-    
+
     refreshData() {
       this.fetchBookings();
+      this.searchQuery = '';
+      this.statusFilter = '';
+      this.dateFilter = '';
     }
   },
-  
+
   async mounted() {
-    await this.fetchBookings();
-    await this.fetchUsers();
-    await this.fetchLapangan();
+    await Promise.all([
+      this.fetchBookings(),
+      this.fetchUsers(),
+      this.fetchLapangan(),
+      this.fetchTimeSlots()
+    ]);
   }
 };
 </script>
@@ -709,7 +745,6 @@ export default {
   font-family: "Segoe UI", sans-serif;
   background-color: #f5f9ff;
   min-height: 100vh;
-  padding: 20px;
 }
 
 /* Loading */
@@ -775,18 +810,19 @@ export default {
 }
 
 .add-btn {
-  background: linear-gradient(to right, #4caf50, #66bb6a);
+  background: linear-gradient(135deg, #1976d2, #2196f3);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
 }
 
 .add-btn:hover {
@@ -1019,7 +1055,7 @@ export default {
 }
 
 /* Responsive tweaks */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .stat-card {
     flex-direction: column;
     align-items: flex-start;
@@ -1344,6 +1380,7 @@ select.form-input {
   letter-spacing: 0.5px;
 }
 
+.detail-item,
 .detail-item span,
 .detail-item p {
   color: #1a1a1a;
