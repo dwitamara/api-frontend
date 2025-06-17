@@ -21,6 +21,7 @@
     </div>
     <nav class="nav-menu">
       <ul>
+        <li><router-link to="/admin/users" @click="closeSidebar">Manajemen User</router-link></li>
         <li><router-link to="/admin/lapangan" @click="closeSidebar">Manajemen Lapangan</router-link></li>
       </ul>
     </nav>
