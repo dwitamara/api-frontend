@@ -1,25 +1,36 @@
 <template>
   <div class="sewa-container">
-    <h1>Pilih Lapangan</h1>
+    <h1 class="judul">Pilih Lapangan</h1>
     <div class="lapangan-grid">
       <div v-for="lapangan in lapanganList" :key="lapangan.id" class="lapangan-card">
         <img :src="lapangan.linkGambar" alt="Foto Lapangan" class="lapangan-foto" />
+
         <div class="lapangan-info">
-          <h2>{{ lapangan.nama }}</h2>
+          <div class="nama-lapangan">{{ lapangan.nama }}</div>
+
           <div class="lapangan-meta">
-            <span class="rating">⭐ 4.8</span>
-            <span class="lokasi">• {{ lapangan.alamat }}</span>
+            <span class="material-icons">location_on</span>
+            {{ lapangan.alamat }}
           </div>
+
           <div class="lapangan-icons">
-            <span class="jenis-icon">🏟 {{ lapangan.tipeLapangan }}</span>
+            <span class="material-icons">sports</span>
+            {{ lapangan.tipeLapangan }}
           </div>
-          <p class="harga">Mulai <strong>Rp{{ lapangan.harga.toLocaleString() }}</strong> /sesi</p>
-          <router-link :to="`/detail-lapangan/${lapangan.id}`" class="btn-lihat">Lihat Detail</router-link>
+
+          <div class="harga">Mulai <span>Rp{{ lapangan.harga }}</span> /sesi</div>
+
+          <router-link :to="`/detail-lapangan/${lapangan.id}`" class="btn-detail">
+            Lihat Detail
+            <span class="material-icons">arrow_forward</span>
+          </router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+
 
 <script>
 import axios from 'axios'
@@ -48,63 +59,114 @@ export default {
 </script>
 
 <style scoped>
-.sewa-container h1 {
-  color: #222;
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.sewa-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
+
+.judul {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0d1a2d;
+  margin-bottom: 30px;
+}
+
 .lapangan-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 24px;
+  justify-content: center;
 }
+
 .lapangan-card {
-  background: #fff;
-  border-radius: 12px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 350px;
-  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  max-width: 440px;
+  transition: all 0.3s ease-in-out;
 }
+
 .lapangan-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
 }
+
 .lapangan-foto {
   width: 100%;
-  height: 180px;
+  height: 200px;
   object-fit: cover;
 }
-.lapangan-info h2 {
-  color: #222;
-  margin: 0;
+
+.lapangan-info {
+  padding: 22px 18px;
+  text-align: center;
 }
-.lapangan-meta {
-  color: #777;
-  font-size: 14px;
-  margin: 5px 0;
+
+.nama-lapangan {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0d47a1; /* Biru gelap login */
+  margin-bottom: 14px;
 }
+
+.lapangan-meta,
 .lapangan-icons {
-  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
 }
-.jenis-icon {
-  background: #f0f0f0;
-  border-radius: 8px;
-  padding: 4px 8px;
-  margin-right: 5px;
-  font-size: 13px;
-  color: #222;
+
+.material-icons {
+  font-size: 18px;
+  margin-right: 6px;
+  color: #1976D2;
 }
+
 .harga {
   font-size: 16px;
-  color: #333;
-  margin: 10px 0;
+  font-weight: 500;
+  color: #222;
+  margin-top: 14px;
 }
-.btn-lihat {
+
+.harga span {
+  color: #f9a825; /* Warna kuning login */
+  font-weight: 700;
+}
+
+/* Tombol "Lihat Detail" */
+.btn-detail {
   display: inline-block;
-  background-color: #ff5a5f;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 6px;
+  background: linear-gradient(to right, #1976D2, #42A5F5);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
   text-decoration: none;
-  font-weight: bold;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-detail:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-detail .material-icons {
+  font-size: 18px;
+  vertical-align: middle;
+  margin-left: 4px;
 }
 </style>

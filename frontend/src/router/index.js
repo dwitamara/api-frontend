@@ -14,7 +14,6 @@ import Booking from '../views/Booking.vue';
 // Admin
 import AdminLogin from '../views/admin/Login.vue';
 import AdminUsers from '../views/admin/Users.vue';
-import AdminDashboard from '../views/admin/Dashboard.vue';
 import AdminLapangan from '../views/admin/Lapangan.vue';
 import AdminPemesanan from '../views/admin/Pemesanan.vue';
 
@@ -72,12 +71,7 @@ const routes = [
     name: 'AdminLogin',
     component: AdminLogin,
   },
-    {
-    path: '/admin/dashboard',
-    name: 'AdminDashboard',
-    component: AdminDashboard,
-  },
-      {
+          {
     path: '/admin/Users',
     name: 'AdminUsers',
     component: AdminUsers,

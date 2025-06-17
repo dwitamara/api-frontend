@@ -91,7 +91,7 @@ export default {
         localStorage.setItem('adminName', user.username);
 
         // Arahkan ke halaman utama admin
-        this.$router.push('/admin/dashboard');
+        this.$router.push('/admin/Users');
       } catch (err) {
         alert(err.response?.data?.message || 'Login gagal.');
       }

@@ -33,8 +33,7 @@
           <div class="host-text">
             <strong class="host-name">{{ event.nama_user }}</strong><br />
             <span class="host-rating">
-              Rp{{ event.separuh.toLocaleString("id-ID") }}
-              <span v-if="event.isLookingForPartner"> (Patungan)</span>
+              Rp{{ event.fullpay.toLocaleString("id-ID") }} <span>(Sharing)</span>
             </span><br />
             <span class="host-phone">📞 {{ formatPhone(event.no_hp) }}</span>
           </div>
@@ -87,11 +86,10 @@ export default {
 
         const filtered = response.data.data.filter(item => item.isLookingForPartner);
 
-        // Ambil jam dan menit tanpa geser waktu
         const ambilJamMenit = (str) => {
           if (!str) return "-";
-          const time = str.split("T")[1]; // hasil: "12:00:00.000Z"
-          return time.slice(0, 5); // ambil "12:00"
+          const time = str.split("T")[1];
+          return time.slice(0, 5);
         };
 
         this.events = filtered.map(item => {
@@ -110,7 +108,7 @@ export default {
             jam_mulai: jamMulai,
             jam_selesai: jamSelesai,
             isLookingForPartner: true,
-            separuh: Math.floor((item.totalharga || 0) / 2)
+            fullpay: item.totalharga || 70000 // ambil totalharga asli, fallback ke 70rb
           };
         });
 
@@ -128,35 +126,71 @@ export default {
 
 <style scoped>
 .community {
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
-  padding: 20px;
+  padding: 16px;
+  background-color: #e3f2fd;
 }
 
 .banner img {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 10px;
   margin-bottom: 20px;
 }
 
 .filter-sort {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  background: #fffde7;
+  color: #424242;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border-left: 6px solid #fbc02d;
+}
+
+.filter-sort select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 .event-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  color: #1976d2;
 }
 
 .event-card {
-  border: 1px solid #ccc;
+  background: white;
   border-radius: 12px;
   padding: 16px;
-  background-color: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-left: 6px solid #1976d2;
+}
+
+.event-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #1976d2;
+}
+
+.event-meta .tipe {
+  color: #f57f17;
+}
+
+.event-meta .jam {
+  color: #2e7d32;
+}
+
+.event-date,
+.event-location {
+  color: #424242;
+  margin-top: 4px;
 }
 
 .host-info {
@@ -166,85 +200,49 @@ export default {
 }
 
 .host-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  margin-right: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.host-text .host-name {
+.host-text {
+  margin-left: 12px;
+}
+
+.host-name {
   font-weight: bold;
+  font-size: 15px;
+  color: #212121;
 }
 
-.host-text .host-rating {
-  color: #2b9348;
+.host-rating {
+  color: #fbc02d;
+  font-weight: bold;
   font-size: 14px;
 }
 
 .host-phone {
-  color: #333;
-  font-size: 14px;
+  font-size: 13px;
+  color: #616161;
 }
-</style>
 
+/* Responsif */
+@media (max-width: 600px) {
+  .filter-sort {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 
-<style scoped>
-.community {
-  background-color: #cce4ff;
-  padding: 20px;
-}
-.banner img {
-  width: 100%;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-.filter-sort {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.event-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.event-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.event-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-.event-meta {
-  font-weight: bold;
-  color: #e57373;
-}
-.event-date, .event-location {
-  color: #3f51b5;
-  margin-top: 4px;
-}
-.host-info {
-  display: flex;
-  align-items: center;
-  margin-top: 15px;
-}
-.host-img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-.host-text {
-  margin-left: 10px;
-}
-.host-name {
-  color: #333;
-}
-.host-rating {
-  color: #f9a825;
+  .event-title {
+    font-size: 18px;
+  }
+
+  .event-meta,
+  .event-date,
+  .event-location {
+    font-size: 14px;
+  }
 }
 </style>

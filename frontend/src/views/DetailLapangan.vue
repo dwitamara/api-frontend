@@ -76,20 +76,6 @@
           Lanjut ke Pembayaran
         </router-link>
 
-        <router-link
-          :to="{
-            name: 'CariTemanBayar',
-            params: { id: lapangan.id },
-            query: {
-              slotWaktuId: jadwalDipilih.id,
-              tanggal: tanggalDipilih,
-              separuh: lapangan.harga / 2
-            }
-          }"
-          class="btn-sewa btn-cari"
-        >
-          Cari Teman Bermain
-        </router-link>
       </div>
 
       <button v-else class="btn-sewa disabled" disabled>
@@ -200,150 +186,223 @@ export default {
 
 <style scoped>
 .detail-container {
-  padding: 60px;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px;
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .foto-detail {
   width: 100%;
-  max-height: 300px;
+  max-height: 360px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 30px;
+  border-radius: 16px;
+  margin-bottom: 28px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.07);
 }
+
 .detail-main {
   display: flex;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 32px;
 }
+
 .info-kiri {
   flex: 2;
   text-align: left;
 }
+
 .info-kanan {
   flex: 1;
 }
-h1,
-h3,
-p,
-ol,
-li {
-  text-align: left;
-  color: #222;
+
+h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #0d47a1;
+  font-weight: 700;
 }
+
+h3, h4 {
+  color: #0d47a1;
+  font-weight: 600;
+}
+
+p, ol, li {
+  text-align: left;
+  color: #444;
+  line-height: 1.7;
+}
+
 .lokasi {
   font-size: 14px;
-  color: #555;
-  margin-bottom: 10px;
+  color: #607d8b;
+  margin-bottom: 12px;
 }
+
 .jenis-tag {
   margin-bottom: 20px;
 }
+
 .badge {
-  background: #e0e0e0;
-  padding: 6px 12px;
+  background-color: #90caf9;
+  color: white;
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 13px;
   font-weight: 600;
 }
+
 .section {
   margin-bottom: 30px;
 }
+
 .section h3 {
   font-size: 18px;
   margin-bottom: 10px;
 }
+
 .section p,
 .section li {
   font-size: 15px;
-  line-height: 1.7;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
+
 .harga-box {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 10px;
+  background: linear-gradient(to right, #e3f2fd, #bbdefb);
+  padding: 20px;
+  border-radius: 16px;
   margin-bottom: 20px;
   text-align: left;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
-.mulai {
-  font-size: 13px;
-  color: #777;
-}
-.harga {
-  font-size: 24px;
-  color: #1976d2;
-  font-weight: bold;
-}
+
+.mulai,
 .per-sesi {
   font-size: 13px;
-  color: #777;
+  color: #555;
 }
+
+.harga {
+  font-size: 28px;
+  color: #0d47a1;
+  font-weight: bold;
+}
+
 .jadwal-box {
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 10px;
-  font-size: 16px;
-  color: #222;
-  text-align: left;
+  background-color: #f9f9f9;
+  border: 1px solid #bbdefb;
+  padding: 20px;
+  border-radius: 16px;
+  font-size: 15px;
+  color: #333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
+
 .jadwal-box h4 {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #0d47a1;
 }
+
 .jadwal-box input[type='date'] {
-  padding: 8px;
-  margin-bottom: 10px;
+  padding: 10px;
+  margin-bottom: 14px;
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid #90caf9;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #0d47a1;
 }
+
+.btn-cek {
+  background-color: #1e88e5;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cek:hover {
+  background-color: #1565c0;
+}
+
 .jadwal-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 12px;
   margin-top: 10px;
 }
+
 .slot-jam {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: #f3f3f3;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #90caf9;
+  background-color: #e3f2fd;
+  color: #0d47a1;
   cursor: pointer;
-  color: #000;
-}
-.slot-jam.tersedia {
-  background-color: #d4edda;
-  border-color: #28a745;
-}
-.slot-jam.selected {
-  border-color: #2ecc71;
-  background-color: #a3e4a3;
-}
-.slot-jam:disabled {
-  background-color: #eee;
-  color: #999;
-  cursor: not-allowed;
-}
-.tombol-bawah {
-  margin-top: 30px;
+  transition: all 0.2s ease;
+  font-weight: 500;
   text-align: center;
 }
+
+.slot-jam:hover {
+  background-color: #bbdefb;
+}
+
+.slot-jam.tersedia {
+  background-color: #42a5f5;
+  border-color: #64b5f6;
+  color: white;
+}
+
+.slot-jam.selected {
+  border-color: #1976d2;
+  background-color: #64b5f6;
+  color: white;
+}
+
+.slot-jam:disabled {
+  background-color: #eeeeee;
+  color: #aaaaaa;
+  cursor: not-allowed;
+}
+
+.tombol-bawah {
+  margin-top: 40px;
+  text-align: center;
+}
+
 .btn-sewa {
   display: inline-block;
-  background-color: #1976d2;
+  background-color: #1e88e5;
   color: white;
-  padding: 12px 30px;
-  border-radius: 8px;
+  padding: 14px 30px;
+  border-radius: 12px;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   font-weight: bold;
   margin: 10px 5px;
+  font-size: 15px;
+  transition: background-color 0.3s;
 }
+
+.btn-sewa:hover {
+  background-color: #1565c0;
+}
+
 .btn-sewa.disabled {
-  background-color: #999;
+  background-color: #bdbdbd;
   cursor: not-allowed;
-}
-.btn-cari {
-  background-color: #2ecc71;
 }
 </style>
