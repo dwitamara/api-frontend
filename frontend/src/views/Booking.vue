@@ -10,6 +10,11 @@
     <button @click="lanjutPembayaran" class="btn-bayar">
       Lanjut ke Pembayaran
     </button>
+
+    <div v-if="showQris" class="qris-wrapper">
+      <p>Silakan scan QRIS berikut untuk membayar:</p>
+      <img src="/qris.jpeg" alt="QRIS Pembayaran" class="qris-img" />
+    </div>
   </div>
 
   <div v-else>
@@ -24,6 +29,7 @@ export default {
     return {
       user: null,
       harga: 0,
+      showQris: false,
     };
   },
   computed: {
@@ -37,10 +43,10 @@ export default {
   methods: {
     async lanjutPembayaran() {
       const [jamMulai, jamSelesai] = this.jam.split(' - ');
-      const token = localStorage.getItem('token'); // atau sesuaikan auth-mu
+      const token = localStorage.getItem('token');
 
       try {
-        const res = await fetch('http://localhost:3000/api/booking', {
+        const res = await fetch('http://localhost:3000/api/booking/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -57,11 +63,12 @@ export default {
         });
 
         const result = await res.json();
+
         if (res.ok) {
-          alert('Booking berhasil, lanjut ke pembayaran QRIS!');
-          this.$router.push('/riwayat-booking');
+          alert('Booking berhasil, silakan lanjutkan pembayaran QRIS.');
+          this.showQris = true;
         } else {
-          alert('Gagal booking: ' + result.message);
+          alert('Gagal booking: ' + (result.message || 'Terjadi kesalahan'));
         }
       } catch (error) {
         console.error('Error saat booking:', error);
@@ -100,7 +107,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .booking-container {
   padding: 40px;
@@ -129,5 +135,17 @@ p {
   cursor: pointer;
   font-weight: bold;
   margin-top: 20px;
+}
+
+.qris-wrapper {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.qris-img {
+  max-width: 300px;
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid #1976d2;
 }
 </style>

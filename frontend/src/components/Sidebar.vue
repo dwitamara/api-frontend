@@ -21,7 +21,6 @@
     </div>
     <nav class="nav-menu">
       <ul>
-        <li><router-link to="/admin/users" @click="closeSidebar">Kelola User</router-link></li>
         <li><router-link to="/admin/lapangan" @click="closeSidebar">Manajemen Lapangan</router-link></li>
       </ul>
     </nav>

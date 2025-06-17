@@ -12,23 +12,24 @@
         Urutkan berdasarkan:
         <select v-model="sortOption" @change="sortEvents">
           <option value="datetime">Waktu dan Tanggal</option>
-          <option value="level">Level</option>
+          <option value="lapangan">Nama Lapangan</option>
         </select>
       </label>
     </div>
 
     <!-- EVENT CARD -->
     <div class="event-list">
+      <div v-if="events.length === 0">Tidak ada event komunitas.</div>
       <div v-for="event in events" :key="event.id" class="event-card">
-        <h2 class="event-title">{{ event.title }}</h2>
-        <p class="event-meta"><strong>{{ event.sport }}</strong> • {{ event.level }}</p>
-        <p class="event-date">📅 {{ formatDate(event.datetime) }}</p>
-        <p class="event-location">📍 {{ event.location }}</p>
+        <h2 class="event-title">Main Bareng di {{ event.nama_lapangan }}</h2>
+        <p class="event-meta"><strong>Badminton</strong> • {{ event.slot_waktu }}</p>
+        <p class="event-date">📅 {{ formatDate(event.tanggal) }}</p>
+        <p class="event-location">📍 {{ event.alamat_lapangan }}</p>
         <div class="host-info">
-          <img :src="event.hostImage" alt="Host" class="host-img" />
+          <img src="https://i.pravatar.cc/50" alt="Host" class="host-img" />
           <div class="host-text">
-            <strong class="host-name">{{ event.host }}</strong><br />
-            <span class="host-rating">⭐ {{ event.rating }} ({{ event.reviews }})</span>
+            <strong class="host-name">{{ event.nama_user }}</strong><br />
+            <span class="host-rating">Rp{{ event.separuh }}</span>
           </div>
         </div>
       </div>
@@ -37,79 +38,78 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'Community',
   data() {
     return {
+      events: [],
       sortOption: 'datetime',
-      events: [
-        {
-          id: 1,
-          title: 'Mabar With Starlap',
-          sport: 'Badminton',
-          level: 'Beginner – Pro',
-          datetime: '2025-05-29T20:00',
-          location: 'Court 1 • Ultra Badminton Hall, Kota Tangerang',
-          host: 'Starlap Community',
-          hostImage: 'https://i.pravatar.cc/50?img=1',
-          rating: 4.88,
-          reviews: 44
-        },
-        {
-          id: 2,
-          title: 'Mabar Spesial Long Weekend',
-          sport: 'Badminton',
-          level: 'Newbie – Intermediate',
-          datetime: '2025-05-29T10:00',
-          location: 'Lapangan 4 • Gor Sima, Kota Depok',
-          host: 'Co Card',
-          hostImage: 'https://i.pravatar.cc/50?img=2',
-          rating: 4.97,
-          reviews: 172
-        }
-      ]
     };
   },
   methods: {
-    formatDate(datetime) {
-      const date = new Date(datetime);
-      return date.toLocaleString('id-ID', {
-        weekday: 'short',
+    formatDate(tanggal) {
+      const date = new Date(tanggal);
+      return date.toLocaleDateString('id-ID', {
+        weekday: 'long',
         day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+        month: 'long',
+        year: 'numeric'
       });
     },
     sortEvents() {
       if (this.sortOption === 'datetime') {
-        this.events.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
-      } else if (this.sortOption === 'level') {
-        this.events.sort((a, b) => a.level.localeCompare(b.level));
+        this.events.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+      } else if (this.sortOption === 'lapangan') {
+        this.events.sort((a, b) => a.nama_lapangan.localeCompare(b.nama_lapangan));
+      }
+    },
+    async fetchCommunityEvents() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:3000/book/for-community", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        // Sesuaikan dengan struktur data dari backend kamu
+        this.events = response.data.data.map(item => ({
+          id: item.id,
+          nama_lapangan: item.lapangan?.nama || "Lapangan",
+          alamat_lapangan: item.lapangan?.alamat || "Alamat tidak tersedia",
+          slot_waktu: item.slot_waktu?.jam_mulai + " - " + item.slot_waktu?.jam_selesai,
+          tanggal: item.tanggal,
+          separuh: item.separuh,
+          nama_user: item.user?.nama || "User"
+        }));
+
+        this.sortEvents();
+      } catch (err) {
+        console.error("Gagal mengambil data komunitas:", err);
       }
     }
   },
   mounted() {
-    this.sortEvents();
+    this.fetchCommunityEvents();
   }
 };
 </script>
 
 <style scoped>
+/* gaya tetap sama */
 .community {
   max-width: 800px;
   margin: 0 auto;
-  color: #333; /* Default text color */
+  color: #333;
   font-family: 'Segoe UI', sans-serif;
 }
-
 .banner img {
   width: 100%;
   border-radius: 12px;
   margin-bottom: 16px;
 }
-
 .filter-sort {
   display: flex;
   justify-content: space-between;
@@ -118,16 +118,14 @@ export default {
   color: #444;
   font-size: 14px;
 }
-
 .filter-sort select {
   margin-left: 8px;
   padding: 4px;
   border-radius: 6px;
   border: 1px solid #ccc;
   background: #f9f9f9;
-  color: #333; 
+  color: #333;
 }
-
 .event-card {
   border: 1px solid #ddd;
   border-radius: 12px;
@@ -136,37 +134,31 @@ export default {
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
 }
-
 .event-title {
   color: #4a4a4a;
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 4px;
 }
-
 .event-meta {
-  color: #ff8a80; /* Pink pastel */
+  color: #ff8a80;
   margin-bottom: 8px;
 }
-
 .event-date {
-  color: #7faaff; /* Blue pastel */
+  color: #7faaff;
   font-size: 14px;
   margin-bottom: 4px;
 }
-
 .event-location {
-  color: #64b5f6; /* Light blue pastel */
+  color: #64b5f6;
   font-size: 14px;
   margin-bottom: 12px;
 }
-
 .host-info {
   display: flex;
   align-items: center;
   margin-top: 12px;
 }
-
 .host-img {
   width: 40px;
   height: 40px;
@@ -174,18 +166,15 @@ export default {
   margin-right: 12px;
   object-fit: cover;
 }
-
 .host-text {
   color: #5d5d5d;
 }
-
 .host-name {
   font-size: 15px;
   color: #444;
 }
-
 .host-rating {
   font-size: 13px;
-  color: #fbc02d; /* Gold pastel */
+  color: #fbc02d;
 }
 </style>
