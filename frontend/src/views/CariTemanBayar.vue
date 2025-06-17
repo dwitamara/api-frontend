@@ -25,13 +25,13 @@
     </p>
 
     <p>
-      <strong>Total yang dibayar sekarang:</strong>
+      <strong>Total yang dibayar sekarang (separuh):</strong>
       <span class="highlight">Rp {{ Number(separuh).toLocaleString('id-ID') }}</span>
     </p>
 
     <!-- Tombol Bayar -->
-    <button v-if="!showQRIS" @click="bayarSeparuh" class="btn-bayar">
-      Bayar dan Cari Teman
+    <button v-if="!showQRIS" @click="tampilkanQRIS" class="btn-bayar">
+      Bayar dan Gabung Komunitas
     </button>
 
     <!-- QRIS dan Tombol Selesai -->
@@ -39,7 +39,7 @@
       <img src="/qris.jpeg" alt="QRIS" class="qris-img" />
       <p>Setelah membayar, klik tombol di bawah ini</p>
       <button @click="selesaikanPembayaran" class="btn-selesai">
-        Selesai
+        Selesai & Gabung Komunitas
       </button>
     </div>
   </div>
@@ -80,7 +80,6 @@ export default {
 
       const slot = response.data.data;
 
-      // Format waktu agar rapi (misalnya: 14:00)
       const formatJam = (jamStr) => {
         const [jam, menit] = jamStr.split('.');
         return `${jam.padStart(2, '0')}:${menit.padStart(2, '0')}`;
@@ -91,49 +90,51 @@ export default {
         jamSelesai: formatJam(slot.jamSelesai),
       };
     } catch (err) {
-      console.error('Gagal mengambil data slot waktu:', err);
+      console.error('❌ Gagal mengambil data slot waktu:', err);
     }
   },
   methods: {
-    bayarSeparuh() {
+    tampilkanQRIS() {
       this.showQRIS = true;
     },
     async selesaikanPembayaran() {
-      if (!this.lapanganId || !this.slotWaktuId || !this.tanggal || !this.separuh) {
-        alert('Data booking tidak lengkap.');
-        return;
-      }
+  if (!this.lapanganId || !this.slotWaktuId || !this.tanggal || !this.separuh) {
+    alert('Data booking tidak lengkap.');
+    return;
+  }
 
-      const payload = {
-        lapanganId: this.lapanganId,
-        tanggalBooking: this.tanggal,
-        slotWaktuId: this.slotWaktuId,
-        totalharga: this.separuh,
-        tersedia: true,
-        isLookingForPartner: true,
-      };
+  const fullPrice = this.separuh * 2; // ✅ harga asli 70.000
 
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          alert('Silakan login terlebih dahulu.');
-          this.$router.push('/login');
-          return;
-        }
+  const payload = {
+    lapanganId: this.lapanganId,
+    tanggalBooking: this.tanggal,
+    slotWaktuId: this.slotWaktuId,
+    totalharga: fullPrice, // ✅ kirim harga total ke backend
+    tersedia: true,
+    isLookingForPartner: true, // ✅ supaya tampil di komunitas
+  };
 
-        await axios.post('http://localhost:3000/book/create', payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        alert('Booking berhasil! Kamu sekarang tampil di komunitas.');
-        this.$router.push('/community');
-      } catch (err) {
-        console.error('❌ Gagal booking:', err.response?.data || err);
-        alert('Gagal booking: ' + (err.response?.data?.message || 'Terjadi kesalahan.'));
-      }
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Silakan login terlebih dahulu.');
+      this.$router.push('/login');
+      return;
     }
+
+    await axios.post('http://localhost:3000/book/create', payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    alert('Berhasil bergabung! Kamu sekarang tampil di komunitas.');
+    this.$router.push('/community');
+  } catch (err) {
+    console.error('❌ Gagal booking:', err.response?.data || err);
+    alert('Gagal booking: ' + (err.response?.data?.message || 'Terjadi kesalahan.'));
+  }
+}
   }
 };
 </script>

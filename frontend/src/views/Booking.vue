@@ -1,151 +1,185 @@
 <template>
-  <div class="booking-container" v-if="user">
+  <div class="cari-teman-container">
     <h1>Pembayaran Penuh</h1>
-    <p>Lapangan ID: {{ $route.params.id }}</p>
-    <p>Jadwal: {{ jam }}</p>
-    <p>Tanggal: {{ tanggal }}</p>
-    <p v-if="harga">Total yang harus dibayar: <strong>Rp {{ harga.toLocaleString() }}</strong></p>
-    <p v-else>Harga tidak tersedia</p>
 
-    <button @click="lanjutPembayaran" class="btn-bayar">
+    <p>
+      <strong>Lapangan ID:</strong>
+      <span class="highlight">{{ lapanganId }}</span>
+    </p>
+
+    <p>
+      <strong>Jadwal:</strong>
+      <span class="highlight">
+        <template v-if="jadwal">
+          {{ jadwal.jamMulai }} - {{ jadwal.jamSelesai }}
+        </template>
+        <template v-else>
+          Tidak tersedia
+        </template>
+      </span>
+    </p>
+
+    <p>
+      <strong>Tanggal:</strong>
+      <span class="highlight">{{ tanggal || 'Tidak tersedia' }}</span>
+    </p>
+
+    <p>
+      <strong>Total yang harus dibayar:</strong>
+      <span class="highlight">
+        <template v-if="harga">
+          Rp {{ harga.toLocaleString('id-ID') }}
+        </template>
+        <template v-else>
+          Tidak tersedia
+        </template>
+      </span>
+    </p>
+
+    <!-- Tombol Bayar -->
+    <button v-if="!showQRIS" @click="tampilkanQRIS" class="btn-bayar">
       Lanjut ke Pembayaran
     </button>
 
-    <div v-if="showQris" class="qris-wrapper">
-      <p>Silakan scan QRIS berikut untuk membayar:</p>
-      <img src="/qris.jpeg" alt="QRIS Pembayaran" class="qris-img" />
+    <!-- QRIS dan Tombol Selesai -->
+    <div v-if="showQRIS" class="qris-section">
+      <img src="/qris.jpeg" alt="QRIS" class="qris-img" />
+      <p>Setelah membayar, klik tombol di bawah ini</p>
+      <button @click="selesaikanPembayaran" class="btn-selesai">
+        Selesai
+      </button>
     </div>
-  </div>
-
-  <div v-else>
-    <p>Silakan login terlebih dahulu...</p>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-  name: 'Booking',
+  name: 'BayarPenuh',
   data() {
     return {
-      user: null,
-      harga: 0,
-      showQris: false,
+      lapanganId: '',
+      slotWaktuId: null,
+      tanggal: '',
+      harga: null,
+      jadwal: null,
+      showQRIS: false,
     };
   },
-  computed: {
-    tanggal() {
-      return this.$route.query.tanggal;
-    },
-    jam() {
-      return this.$route.query.jam;
-    },
+  async mounted() {
+    this.lapanganId = this.$route.params.id;
+    this.slotWaktuId = this.$route.query.slotWaktuId;
+    this.tanggal = this.$route.query.tanggal;
+
+    await this.ambilHarga();
+    await this.ambilJadwal();
   },
   methods: {
-    async lanjutPembayaran() {
-      const [jamMulai, jamSelesai] = this.jam.split(' - ');
-      const token = localStorage.getItem('token');
-
-      try {
-        const res = await fetch('http://localhost:3000/api/booking/create', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            lapanganId: this.$route.params.id,
-            tanggalBooking: this.tanggal,
-            jamMulai: `${this.tanggal}T${jamMulai}:00`,
-            jamSelesai: `${this.tanggal}T${jamSelesai}:00`,
-            tersedia: true,
-            totalharga: this.harga,
-          }),
-        });
-
-        const result = await res.json();
-
-        if (res.ok) {
-          alert('Booking berhasil, silakan lanjutkan pembayaran QRIS.');
-          this.showQris = true;
-        } else {
-          alert('Gagal booking: ' + (result.message || 'Terjadi kesalahan'));
-        }
-      } catch (error) {
-        console.error('Error saat booking:', error);
-        alert('Terjadi kesalahan saat melakukan booking');
-      }
-    },
-
-    cekLogin() {
-      const user = localStorage.getItem('user');
-      if (user) {
-        this.user = JSON.parse(user);
-      } else {
-        this.$router.push('/login');
-      }
-    },
-
     async ambilHarga() {
       const hargaDariQuery = parseInt(this.$route.query.harga);
       if (hargaDariQuery && !isNaN(hargaDariQuery)) {
         this.harga = hargaDariQuery;
       } else {
         try {
-          const res = await fetch(`http://localhost:3000/api/lapangan/${this.$route.params.id}`);
+          const res = await fetch(`http://localhost:3000/api/lapangan/${this.lapanganId}`);
           const data = await res.json();
           this.harga = data.harga;
         } catch (err) {
           console.error('Gagal ambil harga:', err);
         }
       }
-    }
+    },
+    async ambilJadwal() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(
+          `http://localhost:3000/waktu/${this.slotWaktuId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const slot = response.data.data;
+
+        const formatJam = (jamStr) => {
+          const [jam, menit] = jamStr.split('.');
+          return `${jam.padStart(2, '0')}:${menit.padStart(2, '0')}`;
+        };
+
+        this.jadwal = {
+          jamMulai: formatJam(slot.jamMulai),
+          jamSelesai: formatJam(slot.jamSelesai),
+        };
+      } catch (err) {
+        console.error('❌ Gagal mengambil data slot waktu:', err.response?.data || err);
+      }
+    },
+    tampilkanQRIS() {
+      this.showQRIS = true;
+    },
+    async selesaikanPembayaran() {
+      if (!this.lapanganId || !this.slotWaktuId || !this.tanggal || !this.harga) {
+        alert('Data booking tidak lengkap.');
+        return;
+      }
+
+      const payload = {
+        lapanganId: this.lapanganId,
+        tanggalBooking: this.tanggal,
+        slotWaktuId: this.slotWaktuId,
+        totalharga: this.harga,
+        tersedia: true,
+        isLookingForPartner: false, // karena pembayaran penuh
+      };
+
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          alert('Silakan login terlebih dahulu.');
+          this.$router.push('/login');
+          return;
+        }
+
+        await axios.post('http://localhost:3000/book/create', payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        alert('Booking berhasil! Silakan cek di halaman penyewaanmu.');
+        this.$router.push('/sewa');
+      } catch (err) {
+        console.error('❌ Gagal booking:', err.response?.data || err);
+        alert('Gagal booking: ' + (err.response?.data?.message || 'Terjadi kesalahan.'));
+      }
+    },
   },
-  mounted() {
-    this.cekLogin();
-    this.ambilHarga();
-  }
 };
 </script>
 
 <style scoped>
-.booking-container {
-  padding: 40px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-h1 {
-  margin-bottom: 20px;
-  color: #333;
-}
-
-p {
-  margin: 10px 0;
-  font-size: 20px;
-  color: #1976d2;
+.highlight {
+  color: #1e88e5;
   font-weight: bold;
 }
-
-.btn-bayar {
-  background-color: #1976d2;
+.btn-bayar,
+.btn-selesai {
+  margin-top: 16px;
+  padding: 10px 20px;
+  background-color: #1e88e5;
   color: white;
-  padding: 12px 30px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
-  margin-top: 20px;
 }
-
-.qris-wrapper {
-  margin-top: 30px;
-  text-align: center;
-}
-
 .qris-img {
-  max-width: 300px;
-  width: 100%;
-  border-radius: 10px;
-  border: 2px solid #1976d2;
+  margin-top: 16px;
+  width: 200px;
+}
+.qris-section {
+  text-align: center;
 }
 </style>
