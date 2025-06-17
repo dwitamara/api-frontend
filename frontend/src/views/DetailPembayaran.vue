@@ -1,22 +1,46 @@
 <template>
-  <div class="container">
-    <h2>Detail Pembayaran</h2>
+  <div class="cari-teman-container">
+    <h1>Pembayaran Penuh</h1>
 
-    <div v-if="loading" class="loading">Memuat data booking...</div>
+    <p>
+      <strong>Lapangan ID:</strong>
+      <span class="highlight">{{ lapanganId }}</span>
+    </p>
 
-    <div v-else-if="bookingData.length === 0">
-      <p>Belum ada booking yang dilakukan.</p>
-    </div>
+    <p>
+      <strong>Jadwal:</strong>
+      <span class="highlight">
+        <template v-if="jadwal">
+          {{ jadwal.jamMulai }} - {{ jadwal.jamSelesai }}
+        </template>
+        <template v-else>
+          Tidak tersedia
+        </template>
+      </span>
+    </p>
 
-    <div v-else>
-      <div v-for="booking in bookingData" :key="booking.id" class="booking-card">
-        <h3>{{ booking.detailLapangan.nama }}</h3>
-        <p><strong>Alamat:</strong> {{ booking.detailLapangan.alamat }}</p>
-        <p><strong>Tanggal:</strong> {{ formatTanggal(booking.tanggalBooking) }}</p>
-        <p><strong>Jam:</strong> {{ formatJam(booking.jamMulai) }} - {{ formatJam(booking.jamSelesai) }}</p>
-        <p><strong>Total Harga:</strong> Rp {{ booking.totalharga.toLocaleString() }}</p>
-        <p><strong>Status:</strong> {{ booking.status }}</p>
-      </div>
+    <p>
+      <strong>Tanggal:</strong>
+      <span class="highlight">{{ tanggal || 'Tidak tersedia' }}</span>
+    </p>
+
+    <p>
+      <strong>Total yang harus dibayar:</strong>
+      <span class="highlight">Rp {{ Number(totalHarga).toLocaleString('id-ID') }}</span>
+    </p>
+
+    <!-- Tombol Bayar -->
+    <button v-if="!showQRIS" @click="tampilkanQRIS" class="btn-bayar">
+      Lanjut ke Pembayaran
+    </button>
+
+    <!-- QRIS dan Tombol Selesai -->
+    <div v-if="showQRIS" class="qris-section">
+      <img src="/qris.jpeg" alt="QRIS" class="qris-img" />
+      <p>Setelah membayar, klik tombol di bawah ini</p>
+      <button @click="selesaikanPembayaran" class="btn-selesai">
+        Selesai
+      </button>
     </div>
   </div>
 </template>
@@ -25,69 +49,141 @@
 import axios from 'axios';
 
 export default {
-  name: 'DetailPembayaran',
+  name: 'BayarPenuh',
   data() {
     return {
-      bookingData: [],
-      loading: true,
+      lapanganId: '',
+      slotWaktuId: null,
+      tanggal: '',
+      totalHarga: 0,
+      jadwal: null,
+      showQRIS: false,
     };
   },
+  async mounted() {
+    this.lapanganId = this.$route.params.id;
+    this.slotWaktuId = this.$route.query.slotWaktuId;
+    this.tanggal = this.$route.query.tanggal;
+    this.totalHarga = Number(this.$route.query.totalHarga);
+
+    console.log('DEBUG slotWaktuId:', this.slotWaktuId); // bantu debug
+
+    // Ambil data jadwal
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `http://localhost:3000/waktu/${this.slotWaktuId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const slot = response.data.data;
+
+      const formatJam = (jamStr) => {
+        const [jam, menit] = jamStr.split('.');
+        return `${jam.padStart(2, '0')}:${menit.padStart(2, '0')}`;
+      };
+
+      this.jadwal = {
+        jamMulai: formatJam(slot.jamMulai),
+        jamSelesai: formatJam(slot.jamSelesai),
+      };
+    } catch (err) {
+      console.error('❌ Gagal mengambil data slot waktu:', err.response?.data || err);
+    }
+  },
   methods: {
-    async fetchBooking() {
+    tampilkanQRIS() {
+      this.showQRIS = true;
+    },
+    async selesaikanPembayaran() {
+      if (!this.lapanganId || !this.slotWaktuId || !this.tanggal || !this.totalHarga) {
+        alert('Data booking tidak lengkap.');
+        return;
+      }
+
+      const payload = {
+        lapanganId: this.lapanganId,
+        tanggalBooking: this.tanggal,
+        slotWaktuId: this.slotWaktuId,
+        totalharga: this.totalHarga,
+        tersedia: true,
+        isLookingForPartner: false, // karena bayar penuh
+      };
+
       try {
         const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId'); // Pastikan ini diset saat login
+        if (!token) {
+          alert('Silakan login terlebih dahulu.');
+          this.$router.push('/login');
+          return;
+        }
 
-        const res = await axios.get(`http://localhost:3000/book/user/${userId}`, {
+        await axios.post('http://localhost:3000/book/create', payload, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        this.bookingData = res.data.data;
-      } catch (error) {
-        console.error("Gagal ambil data booking:", error);
-      } finally {
-        this.loading = false;
+        alert('Booking berhasil! Silakan cek di halaman penyewaanmu.');
+        this.$router.push('/sewa'); // arahkan ke halaman sewa
+      } catch (err) {
+        console.error('❌ Gagal booking:', err.response?.data || err);
+        alert('Gagal booking: ' + (err.response?.data?.message || 'Terjadi kesalahan.'));
       }
     },
-    formatTanggal(dateStr) {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString("id-ID", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-    },
-    formatJam(timeStr) {
-      const jam = new Date(timeStr);
-      return jam.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
-    },
-  },
-  mounted() {
-    this.fetchBooking();
   },
 };
 </script>
 
 <style scoped>
-.container {
-  max-width: 700px;
-  margin: 2rem auto;
-  padding: 1rem;
-  background: #f7f7f7;
-  border-radius: 8px;
-}
-.loading {
+.cari-teman-container {
+  background-color: #cce6ff;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 30px auto;
   text-align: center;
-  font-style: italic;
+  font-family: Arial, sans-serif;
 }
-.booking-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  margin-bottom: 1.2rem;
-  background: #fff;
-  border-radius: 5px;
+
+h1 {
+  margin-bottom: 25px;
+  font-size: 28px;
+  color: #222;
+}
+
+p {
+  margin: 12px 0;
+  font-size: 18px;
+}
+
+.highlight {
+  font-weight: bold;
+  color: #0a53be;
+}
+
+.btn-bayar,
+.btn-selesai {
+  background-color: #2ecc71;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.qris-img {
+  width: 250px;
+  margin: 20px 0;
+}
+
+.qris-section {
+  margin-top: 30px;
 }
 </style>
