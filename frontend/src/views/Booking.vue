@@ -174,6 +174,16 @@ export default {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+<<<<<<< Updated upstream
+}
+.qris-img {
+  margin-top: 16px;
+  width: 200px;
+}
+.qris-section {
+  text-align: center;
+=======
+>>>>>>> Stashed changes
 }
 .qris-img {
   margin-top: 16px;
