@@ -26,67 +26,65 @@
       <div class="info-kanan">
         <div class="harga-box">
           <p class="mulai">Mulai dari</p>
-          <p class="harga">Rp {{ lapangan.harga.toLocaleString() }} <span class="per-sesi">Per Sesi</span></p>
+          <p class="harga">
+            Rp {{ Number(lapangan.harga).toLocaleString() }}
+            <span class="per-sesi">Per Sesi</span>
+          </p>
         </div>
 
         <div class="jadwal-box">
           <h4>Pilih Tanggal</h4>
-          <input
-            type="date"
-            v-model="tanggalDipilih"
-            :min="today"
-          />
+          <input type="date" v-model="tanggalDipilih" :min="today" />
 
-          <button
-            v-if="tanggalDipilih"
-            class="btn-cek"
-            @click="generateJadwal"
-          >
+          <button v-if="tanggalDipilih" class="btn-cek" @click="generateJadwal">
             Cek Ketersediaan
           </button>
 
-          <!-- Tampilkan hanya jika jadwal sudah di-generate -->
           <div v-if="jadwal.length > 0">
             <h4 style="margin-top: 15px;">Pilih Jam</h4>
             <div class="jadwal-grid">
               <button
-                v-for="(jam, index) in jadwal"
-                :key="index"
+                v-for="slot in jadwal"
+                :key="slot.id"
                 class="slot-jam"
-                :class="{ tersedia: jam.tersedia, selected: jadwalDipilih === jam }"
-                @click="pilihJadwal(jam)"
+                :class="{ tersedia: slot.tersedia, selected: jadwalDipilih?.id === slot.id }"
+                :disabled="!slot.tersedia"
+                @click="pilihJadwal(slot)"
               >
-                {{ jam.jam }}
+                {{ slot.jamMulai.substring(0, 5) }} - {{ slot.jamSelesai.substring(0, 5) }}
               </button>
             </div>
           </div>
-        </div> <!-- TUTUP .jadwal-box -->
-      </div> <!-- TUTUP .info-kanan -->
-    </div> <!-- TUTUP .detail-main -->
+        </div>
+      </div>
+    </div>
 
     <div class="tombol-bawah">
       <div v-if="jadwalDipilih">
         <router-link
-  :to="{
-    name: 'Booking',
-    params: { id: lapangan.id },
-    query: {
-      jam: jadwalDipilih.jam,
-      tanggal: tanggalDipilih,
-      harga: lapangan.harga
-    }
-  }"
-  class="btn-sewa"
->
-  Lanjut ke Pembayaran
-</router-link>
-
+          :to="{
+            name: 'Booking',
+            params: { id: lapangan.id },
+            query: {
+              slotWaktuId: jadwalDipilih.id,
+              tanggal: tanggalDipilih,
+              harga: lapangan.harga
+            }
+          }"
+          class="btn-sewa"
+        >
+          Lanjut ke Pembayaran
+        </router-link>
 
         <router-link
           :to="{
             name: 'CariTemanBayar',
             params: { id: lapangan.id },
-            query: { jam: jadwalDipilih.jam, tanggal: tanggalDipilih, separuh: lapangan.harga / 2 }
+            query: {
+              slotWaktuId: jadwalDipilih.id,
+              tanggal: tanggalDipilih,
+              separuh: lapangan.harga / 2
+            }
           }"
           class="btn-sewa btn-cari"
         >
@@ -102,60 +100,99 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios"
 
 export default {
-  name: 'DetailLapangan',
+  name: "DetailLapangan",
   data() {
     return {
       lapangan: null,
       jadwal: [],
       jadwalDipilih: null,
-      tanggalDipilih: '',
+      tanggalDipilih: "",
+      slotList: [],
       aturanVenue: [
-        'Pelanggan harus datang tepat waktu.',
-        'Dilarang membawa air mineral gelas.',
-        'Dilarang bersandar di jaring.',
-        'Dilarang membawa senjata tajam dan minuman keras.',
-        'Dilarang memakai sepatu berdempul.'
+        "Pelanggan harus datang tepat waktu.",
+        "Dilarang membawa air mineral gelas.",
+        "Dilarang bersandar di jaring.",
+        "Dilarang membawa senjata tajam dan minuman keras.",
+        "Dilarang memakai sepatu berdempul."
       ]
     }
   },
   computed: {
     today() {
-      const now = new Date()
-      return now.toISOString().split('T')[0]
+      return new Date().toISOString().split("T")[0]
     }
   },
   mounted() {
-    this.fetchLapangan()
+    this.initData()
   },
   methods: {
+    async initData() {
+      await this.fetchLapangan()
+      await this.fetchSlotWaktu()
+    },
+    getAuthHeaders() {
+      const token = localStorage.getItem("token")
+      return {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    },
     async fetchLapangan() {
       try {
         const id = this.$route.params.id
         const response = await axios.get(`http://localhost:3000/lapangan/${id}`)
         this.lapangan = response.data.data
-      } catch (error) {
-        console.error('Gagal mengambil detail lapangan:', error)
+      } catch (err) {
+        console.error("Gagal mengambil detail lapangan:", err)
       }
     },
-    generateJadwal() {
-      const jadwal = []
-      for (let jam = 10; jam <= 21; jam++) {
-        jadwal.push({
-          jam: `${jam}:00 - ${jam + 1}:00`,
-          tersedia: Math.random() > 0.2 // simulasi
+    async fetchSlotWaktu() {
+      try {
+        const response = await axios.get("http://localhost:3000/waktu/all-waktu", this.getAuthHeaders())
+        this.slotList = response.data.data
+      } catch (err) {
+        console.error("Gagal mengambil slot waktu:", err)
+        alert("Token expired atau tidak valid. Silakan login ulang.")
+      }
+    },
+    async generateJadwal() {
+      if (!this.tanggalDipilih || !this.lapangan) return
+
+      try {
+        const tanggal = this.tanggalDipilih
+        const lapanganId = this.lapangan.id
+        const response = await axios.get(`http://localhost:3000/book/now/${tanggal}`, this.getAuthHeaders())
+
+        const semuaBooking = response.data.data
+        const bookingLapanganIni = semuaBooking.filter(
+          b => b.lapanganId === lapanganId && b.status !== "CANCELED"
+        )
+
+        this.jadwal = this.slotList.map(slot => {
+          const sudahBooking = bookingLapanganIni.some(b => b.slotWaktuId === slot.id)
+          return {
+            id: slot.id,
+            jamMulai: slot.jamMulai,
+            jamSelesai: slot.jamSelesai,
+            tersedia: !sudahBooking
+          }
         })
+
+        this.jadwalDipilih = null
+      } catch (err) {
+        console.error("Gagal mengambil data booking:", err)
+        alert("Terjadi kesalahan saat mengecek jadwal.")
       }
-      this.jadwal = jadwal
-      this.jadwalDipilih = null
     },
-    pilihJadwal(jam) {
-      if (!jam.tersedia) {
-        return alert('Jadwal tidak tersedia!')
+    pilihJadwal(slot) {
+      if (!slot.tersedia) {
+        return alert("Jadwal tidak tersedia!")
       }
-      this.jadwalDipilih = jam
+      this.jadwalDipilih = slot
     }
   }
 }
@@ -280,6 +317,11 @@ li {
 .slot-jam.selected {
   border-color: #2ecc71;
   background-color: #a3e4a3;
+}
+.slot-jam:disabled {
+  background-color: #eee;
+  color: #999;
+  cursor: not-allowed;
 }
 .tombol-bawah {
   margin-top: 30px;
