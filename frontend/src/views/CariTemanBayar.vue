@@ -186,6 +186,4 @@ p {
 .qris-section {
   margin-top: 30px;
 }
-
 </style>
-

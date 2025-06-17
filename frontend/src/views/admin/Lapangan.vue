@@ -811,6 +811,48 @@ export default {
   font-size: 16px;
 }
 
+
+/* ============= button ============= */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-buttons button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.action-buttons .view-btn {
+  background-color: #e0f7fa;
+}
+
+.action-buttons .view-btn svg {
+  fill: #1976d2;
+}
+
+.action-buttons .edit-btn {
+  background-color: #fff3e0;
+}
+
+.action-buttons .edit-btn svg {
+  fill: #ef6c00;
+}
+
+.action-buttons .delete-btn {
+  background-color: #ffebee;
+}
+
+.action-buttons .delete-btn svg {
+  fill: #c62828;
+}
+
+
 /* ============= MODAL STYLES ============= */
 .modal-overlay {
   position: fixed;
