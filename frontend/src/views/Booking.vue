@@ -143,7 +143,7 @@ export default {
           },
         });
 
-        alert('Booking berhasil! Silakan cek di halaman penyewaanmu.');
+        alert('Booking berhasil! Silakan hubungi nomor admin berikut untuk konfirmasi 0812345678910.');
         this.$router.push('/sewa-lapangan');
       } catch (err) {
         console.error('❌ Gagal booking:', err.response?.data || err);

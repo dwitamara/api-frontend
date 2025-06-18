@@ -9,8 +9,13 @@
         <h1>Selamat Datang di <span class="highlight">SportVenue</span></h1>
         <p>Sewa lapangan olahraga jadi mudah dan cepat.</p>
         <div class="cta-buttons">
-          <button class="cta">Cari Lapangan</button>
-          <button class="cta outline">Gabung Komunitas</button>
+          <!-- Tambahkan router-link -->
+          <router-link to="/sewa-lapangan">
+            <button class="cta">Cari Lapangan</button>
+          </router-link>
+          <router-link to="/community">
+            <button class="cta outline">Gabung Komunitas</button>
+          </router-link>
         </div>
       </div>
     </div>
